@@ -1,3 +1,6 @@
+<?php include "system/config_service.php";?>
+<?php include "system/gen_uuid_service.php";?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -144,12 +147,13 @@
     <script src="lib/datepicker/js/bootstrap-datepicker.js"></script>
     <script src="lib/editor/dist/summernote.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/action.js"></script>
 
 
     <!-- Contact Form JavaScript -->
     <!-- Do not edit these files! In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
     <script src="../js/jqBootstrapValidation.js"></script>
-    <script src="../js/contact_me.js"></script>
+    <!-- // <script src="../js/contact_me.js"></script> -->
 
 </body>
 
