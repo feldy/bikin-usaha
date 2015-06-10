@@ -12,19 +12,19 @@
             </div>
             <div class="panel-body">
                 <!-- <div class="row"> -->
-                    <form role="form">
+                    <form role="form" action="system/daftar_baru_service.php" method="post" enctype="multipart/form-data">
                         <div class="col-md-12"> 
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Nama Lengkap :</label>
-                                    <input type="text" class="form-control"  required data-validation-required-message="Masukan nama lengkap kamu donk !">
+                                    <input name="nama" type="text" class="form-control"  required data-validation-required-message="Masukan nama lengkap kamu donk !">
                                     <p class="help-block"></p>
                                 </div>
                             </div>
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Email :</label>
-                                    <input type="email" class="form-control"  
+                                    <input name="email_utama" type="email" class="form-control"  
                                     required 
                                     data-validation-required-message="Masukan email kamu donk !"
                                     data-validation-email-message="Email tidak valid !"
@@ -35,7 +35,7 @@
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Password :</label>
-                                    <input type="password" class="form-control"  required 
+                                    <input name="password_utama" type="password" class="form-control"  required 
                                     data-validation-required-message="Masukan password kamu donk !">
                                     <p class="help-block"></p>
                                 </div>
@@ -43,21 +43,21 @@
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Tempat Lahir :</label>
-                                    <input type="text" class="form-control">
+                                    <input name="tempat" type="text" class="form-control">
                                     <p class="help-block"></p>
                                 </div>
                             </div>
                             <div class="control-group form-group">
                                 <label>Tanggal Lahir :</label>
                                 <div class="input-group date">
-                                    <input id="tanggal" type="text" class="form-control">
+                                    <input name="tgl_lahir" id="tanggal" type="text" class="form-control">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
                             </div>
                             <div class="control-group form-group">
                                 <label>Jenis Kelamin :</label>
                                 <div class="controls">
-                                    <select id="disabledSelect" class="form-control">
+                                    <select name="jk" id="disabledSelect" class="form-control">
                                         <option value="Laki-Laki">Laki-Laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
@@ -66,27 +66,27 @@
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Nomor Telepon :</label>
-                                    <input type="text" class="form-control" />
+                                    <input name="tlp" type="text" class="form-control" />
                                     <p class="help-block"></p>
                                 </div>
                             </div>
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Alamat :</label>
-                                    <textarea rows="5" class="form-control" ></textarea>
+                                    <textarea name="alamat" rows="5" class="form-control" ></textarea>
                                     <p class="help-block"></p>
                                 </div>
                             </div> 
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Upload CV Kamu :</label>
-                                    <input type="file" />
+                                    <input name="file" type="file" />
                                     <p class="help-block"></p>
                                 </div>
                             </div>
                             <div id="success"></div>
                             <!-- For success/fail messages -->
-                            <button type="submit" class="btn btn-primary">Daftar</button>
+                            <button name="btn_simpan_daftar_baru" type="submit" class="btn btn-primary">Daftar</button>
                         </div>
                     </form>
                 <!-- </div> -->
