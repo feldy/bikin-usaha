@@ -14,19 +14,19 @@
             <div class="panel-body">
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#step1" data-toggle="tab">Step 1</a>
+                    <li id="_step1" class="active"><a href="#step1" >Step 1</a>
                     </li>
-                    <li><a href="#step2" data-toggle="tab">Step 2</a>
+                    <li id="_step2"><a href="#step2" >Step 2</a>
                     </li>
-                    <li><a href="#step3" data-toggle="tab">Step 3</a>
+                    <li id="_step3"><a href="#step3" >Step 3</a>
                     </li>
-                    <li><a href="#finish" data-toggle="tab">Finish</a>
+                    <li id="_step4"><a href="#finish">Finish</a>
                     </li>
                 </ul>
 
                 <!-- Tab panes -->
                 <form role="form">
-                    <div class="tab-content">
+                    <div class="tab-content ">
                         <div class="tab-pane fade in active" id="step1">
                             <br />
                             <div class="col-md-8"> 
@@ -56,11 +56,13 @@
                                         <div id="deskripsi_proposal_baru"></div>
                                         <p class="help-block"></p>
                                     </div>
-                                </div> 
-                                <a href="#step2" data-toggle="tab" >
-                                <button type="button" class="btn btn-block">
-                                    <i class="fa fa-angle-double-right"></i>
-                                    Selanjutnya. . .</button>       </a>                   
+                                </div>          
+                                <div class="control-group form-group">     
+                                    <button type="button" href="#step2" data-toggle="tab" onclick="toStep2()" class="btn btn-btn btn-info">
+                                        Selanjutnya
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </button>       
+                                </div>      
                             </div>
                         </div>
                         <div class="tab-pane fade" id="step2">
@@ -76,10 +78,16 @@
                                         <i class="fa fa-plus-square-o"></i>
                                         Tambahkan Pegawai (2 Orang)</button>
                                 </div>
-                                <a href="#step3" data-toggle="tab" >
-                                <button type="button" class="btn btn-block">
-                                    <i class="fa fa-angle-double-right"></i>
-                                    Selanjutnya. . .</button>       </a>                   
+                                <div class="control-group form-group">
+                                    <button type="button" href="#step1" data-toggle="tab" onclick="toStep1()" class="btn btn-btn btn-info">
+                                        <i class="fa fa-angle-double-left"></i>
+                                        Sebelumnya
+                                    </button>       
+                                    <button type="button" href="#step3" data-toggle="tab" onclick="toStep3()" class="btn btn-btn btn-info">
+                                        Selanjutnya
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </button>       
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="step3">
@@ -127,11 +135,17 @@
                                         <span class="input-group-addon">%</span>
                                     </div>
                                 </div>
-                                <a href="#finish" data-toggle="tab" >
-                                <button type="button" class="btn btn-block">
-                                    <i class="fa fa-angle-double-right"></i>
-                                    Selanjutnya. . .</button>       </a>                   
-                            </div>
+                                <div class="control-group form-group">
+                                    <button type="button" href="#step2" data-toggle="tab" onclick="toStep2()" class="btn btn-btn btn-info">
+                                        <i class="fa fa-angle-double-left"></i>
+                                        Sebelumnya
+                                    </button>       
+                                    <button type="button" href="#finish" data-toggle="tab" onclick="toFinish()" class="btn btn-btn btn-info">
+                                        Selanjutnya
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </button>       
+                                </div>
+                            </div>  
                         </div>
                         <div class="tab-pane fade" id="finish">
                             <br />

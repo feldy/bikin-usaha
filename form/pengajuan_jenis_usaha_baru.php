@@ -61,10 +61,50 @@
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Photo Usahanya udah ada belum ? Upload donk ! :</label>
-                                <input name="file_photo1" type="file" />
-                                <input name="file_photo2" type="file" />
-                                <input name="file_photo3" type="file" />
-                                <input name="file_photo4" type="file" />
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <h4>Images 1</h4>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse&hellip; <input name="file_photo1" type="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <h4>Images 2</h4>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse&hellip; <input name="file_photo2" type="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <h4>Images 3</h4>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse&hellip; <input name="file_photo3" type="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-12">
+                                    <h4>Images 4</h4>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse&hellip; <input name="file_photo4" type="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -72,7 +112,17 @@
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Doc Proposal  :</label>
-                                <input name="file_doc" type="file" />
+                                <div class="col-lg-12 col-sm-12 col-12">
+                                    <h4>Images 4</h4>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-primary btn-file">
+                                                Browse&hellip; <input name="file_doc" type="file">
+                                            </span>
+                                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
                                 <p class="help-block"></p>
                             </div>
                         </div>
