@@ -24,7 +24,7 @@
 			$path = $_FILES['file']['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 			$fileName = $id.".".$ext;
-			move_uploaded_file($_FILES['file']['tmp_name'], '../upload/document/'.$fileName);
+			move_uploaded_file($_FILES['file']['tmp_name'], '../upload/images/'.$fileName);
 			$result = mysql_query("INSERT INTO m_entrepreneur VALUES('$id', '$email', '$password', '$nama', '$alamat', '$jk', '$tlp', '$ttl', '$fileName')");
 			// -- $result = "INSERT INTO m_entrepreneur VALUES('$id', '$email', '$password', '$nama', '$alamat', '$jk', '$tlp', '$ttl', '')";
 			
