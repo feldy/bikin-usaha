@@ -79,6 +79,13 @@
                             </div> 
                             <div class="control-group form-group">
                                 <div class="controls">
+                                    <label>Upload Photo Kamu :</label>
+                                    <input name="file2" type="file" />
+                                    <p class="help-block"></p>
+                                </div>
+                            </div>
+                            <div class="control-group form-group">
+                                <div class="controls">
                                     <label>Upload CV Kamu :</label>
                                     <input name="file" type="file" />
                                     <p class="help-block"></p>

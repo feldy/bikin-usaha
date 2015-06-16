@@ -111,9 +111,8 @@
 
                         <div class="control-group form-group">
                             <div class="controls">
-                                <label>Doc Proposal  :</label>
                                 <div class="col-lg-12 col-sm-12 col-12">
-                                    <h4>Images 4</h4>
+                                    <h4>Doc Proposal :</h4>
                                     <div class="input-group">
                                         <span class="input-group-btn">
                                             <span class="btn btn-primary btn-file">
