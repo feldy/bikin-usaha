@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2015 at 04:31 PM
+-- Generation Time: Jun 16, 2015 at 06:40 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `m_entrepreneur` (
   `jenis_kelamin` varchar(36) DEFAULT NULL,
   `no_telepon` varchar(20) NOT NULL,
   `ttl` varchar(50) DEFAULT NULL,
+  `file_photo` varchar(50) DEFAULT NULL,
   `file_biodata` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -42,8 +43,8 @@ CREATE TABLE IF NOT EXISTS `m_entrepreneur` (
 -- Dumping data for table `m_entrepreneur`
 --
 
-INSERT INTO `m_entrepreneur` (`id`, `email`, `password`, `nama`, `alamat`, `jenis_kelamin`, `no_telepon`, `ttl`, `file_biodata`) VALUES
-('1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'lsdkf@jksh.com', 'skjdhf', 'Test', 'wfjowieufowifuwoiu', 'Laki-Laki', '32987427', 'skjdfhskj, 06/06/2015', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg');
+INSERT INTO `m_entrepreneur` (`id`, `email`, `password`, `nama`, `alamat`, `jenis_kelamin`, `no_telepon`, `ttl`, `file_photo`, `file_biodata`) VALUES
+('1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'lsdkf@jksh.com', 'skjdhf', 'Test', 'wfjowieufowifuwoiu', 'Laki-Laki', '32987427', 'skjdfhskj, 06/06/2015', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg');
 
 -- --------------------------------------------------------
 
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `m_jenis_usaha` (
 --
 
 INSERT INTO `m_jenis_usaha` (`id`, `nama`, `contact_supplier`, `kategori_jenis`, `modal`, `max_jumlah_pegawai`, `deskripsi`, `pic_1`, `pic_2`, `pic_3`, `pic_4`, `doc`, `is_active`) VALUES
-('a72a8470-6f8c-4075-83ee-a503e05db0f9', 'SABANA FRIED CHICKEN', '021878777473', 'Franchise Makanan', '35000000', 2, '<p><span style="font-weight: bold;">DESKRIPSI <span style="text-decoration: line-through;">INI <span style="color: rgb(156, 0, 0);">sdhkjdfhkshfskjdhfsdf</span></span></span></p>', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file1.png', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file2.jpg', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file3.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file4.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file_doc.docx', 0);
+('a72a8470-6f8c-4075-83ee-a503e05db0f9', 'SABANA FRIED CHICKEN', '021878777473', 'Franchise Makanan', '35000000', 1, '<p><span style="font-weight: bold;">DESKRIPSI <span style="text-decoration: line-through;">INI <span style="color: rgb(156, 0, 0);">sdhkjdfhkshfskjdhfsdf</span></span></span></p>', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file1.png', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file2.jpg', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file3.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file4.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file_doc.docx', 0);
 
 -- --------------------------------------------------------
 
