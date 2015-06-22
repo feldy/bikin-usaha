@@ -1,5 +1,42 @@
 var dataUndangan = [];
+var dataTambahKaryawan = [];
+
+function toStep1() {
+	document.getElementById("_step1").className = "active";
+	document.getElementById("_step2").className = "";
+	document.getElementById("_step3").className = "";
+	document.getElementById("_step4").className = "";
+}
+function toStep2() {
+	document.getElementById("_step1").className = "";
+	document.getElementById("_step2").className = "active";
+	document.getElementById("_step3").className = "";
+	document.getElementById("_step4").className = "";
+}
+function toStep3() {
+	document.getElementById("_step1").className = "";
+	document.getElementById("_step2").className = "";
+	document.getElementById("_step3").className = "active";
+	document.getElementById("_step4").className = "";
+}
+function toFinish() {
+
+
+	document.getElementById("_step1").className = "";
+	document.getElementById("_step2").className = "";
+	document.getElementById("_step3").className = "";
+	document.getElementById("_step4").className = "active";
+}
 $(function() {
+	$('.carousel').carousel({
+        interval: 5000 //changes the speed
+    });
+	$('#alamat_proposal_baru').summernote({
+		height: 300,
+		toolbar: [
+		    ['height', ['height']],
+		]
+	});
 	$('#summernote').summernote({
 		height: 300,
 		toolbar: [
@@ -30,14 +67,12 @@ $(function() {
 	    format: "dd/mm/yyyy",
 	    language: "id"
 	});
-
 	$(document).on('change', '.btn-file :file', function() {
 	  	var input = $(this),
 	     	numFiles = input.get(0).files ? input.get(0).files.length : 1,
 	      	label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
 	  		input.trigger('fileselect', [numFiles, label]);
 	});
-
 	$(document).ready( function() {
 	    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
 	        
@@ -85,6 +120,11 @@ $(function() {
 	    $('#msgEmail').attr('class', "");
 	    $("#emailEntrepreneur").val("");
 	})
+	$('#myModal2').on('shown.bs.modal', function() {
+	    $('#msgEmail2').html("");
+	    $('#msgEmail2').attr('class', "");
+	    $("#emailKaryawan").val("");
+	})
 	$("#kirim_undangan").click(function() {
 	  	$.ajax({
 	        url: "system/service_impl.php",
@@ -113,7 +153,8 @@ $(function() {
 	        		$('#msgEmail').attr('class', 'alert alert-success');
 	        		setTimeout(function() {
 	        			$('#myModal').modal('toggle');
-	        			$('#add_image').append('<img width="128px" src="upload/photo_profile/'+e.file_photo+'" alt="" class="img-thumbnail size" />');
+	        			$('#add_image').append('<div class="col-md-3 text-center"><div class="thumbnail"><img width="128px" src="upload/photo_profile/'+e.file_photo+'" alt="" /><div class="caption"><h3>'+e.nama+'</h3></div></div></div>');
+	        			// $('#add_image').append('<img width="128px" src="upload/photo_profile/'+e.file_photo+'" alt="" class="img-thumbnail size" />');
 	        			// $('#add_image').append('<button type="button" class="btn btn-default btn-circle btn-lg"><img width="64" src="upload/photo_profile/'+e.file_photo+'" alt="" /></button>');
 	        		}, 1000);
 
@@ -127,29 +168,53 @@ $(function() {
 	        },
 	    });
 	});
+	$("#setting_investor").change(function(event) {
+		var value = parseInt($("#setting_investor").val());
+		var result = "";
+
+		for (var i = 0; i < value; i++) {
+			result += '<div class="form-group input-group"><input id="nilaiInvest'+i+'" name="nilaiInvest[]" type="number" class="form-control" data-validation-number-message="Isi harus angka !" placeholder="%" ><span class="input-group-addon">%</span></div>';
+		}
+		$('#insert_input_investasi').find('div').remove().end().append(result);
+		// console.log(value);
+	});
+	$("#btn_save_proposal").click(function() {
+		var nilaiPersentase = [];
+		var jumlahInvestor = parseInt($('#setting_investor').val());
+		for (var i = 0; i < jumlahInvestor; i++) {
+			nilaiPersentase.push($('#nilaiInvest'+i).val());
+		}
+		var dataSaveProposal = {
+			type 			: "tambah_proposal",
+			nama_proposal	: $('#nama_proposal').val(),
+			supplier 		: $('#supplier').val(),
+			alamat 			: $('#alamat_proposal_baru').code(),
+			kota 			: $('#kota').val(),
+			deskripsi 		: $('#deskripsi_proposal_baru').code(),
+			data_undangan 	: dataUndangan.toString(),
+			max_jumlah_investor : jumlahInvestor,
+			nilai_persentase_investor : nilaiPersentase.toString(),
+			nilai_persentase_owner : $('#nilai_investasi_owner').val()
+		}
+
+	   $.ajax({
+	        url: "system/buat_proposal_baru_service.php",
+	        type: "POST",
+	        data: dataSaveProposal,
+	        cache: false,
+	        // dataType : "json",
+	        success: function(e) {
+	        	if (e.length > 0) {
+	        		alert(e);
+	        	} else {
+		 			var nextId = $(this).parents('.tab-pane').next().attr("id");
+	  				$('[href=#'+nextId+']').tab('show');
+	        	}
+	        },
+	        error: function() {
+	            // Fail message
+	        },
+	    });
+	});
 });
 
-function toStep1() {
-	document.getElementById("_step1").className = "active";
-	document.getElementById("_step2").className = "";
-	document.getElementById("_step3").className = "";
-	document.getElementById("_step4").className = "";
-}
-function toStep2() {
-	document.getElementById("_step1").className = "";
-	document.getElementById("_step2").className = "active";
-	document.getElementById("_step3").className = "";
-	document.getElementById("_step4").className = "";
-}
-function toStep3() {
-	document.getElementById("_step1").className = "";
-	document.getElementById("_step2").className = "";
-	document.getElementById("_step3").className = "active";
-	document.getElementById("_step4").className = "";
-}
-function toFinish() {
-	document.getElementById("_step1").className = "";
-	document.getElementById("_step2").className = "";
-	document.getElementById("_step3").className = "";
-	document.getElementById("_step4").className = "active";
-}

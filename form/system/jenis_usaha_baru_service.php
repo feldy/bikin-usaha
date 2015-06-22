@@ -34,10 +34,10 @@
 		move_uploaded_file($_FILES['file_photo4']['tmp_name'], '../upload/images/'.$fileName4);
 		move_uploaded_file($_FILES['file_doc']['tmp_name'], '../upload/document/'.$fileName5);
 
-		$result = mysql_query("INSERT INTO m_jenis_usaha VALUES('$id', '$nama_usaha', '$no_tlp', '$jenis_usaha', $modal, $jumlah_pegawai, '$deskripsi', '$fileName1', '$fileName2', '$fileName3', '$fileName4', '$fileName5') ") or die(mysql_error());
+		$result = mysql_query("INSERT INTO m_jenis_usaha VALUES('$id', '$nama_usaha', '$no_tlp', '$jenis_usaha', $modal, $jumlah_pegawai, '$deskripsi', '$fileName1', '$fileName2', '$fileName3', '$fileName4', '$fileName5', 0) ") or die(mysql_error());
 
 		if ($result) {
-				echo "<script> alert('Terima Kasih Partisipasinya !! Admin pengelola akan me-review pengajuan anda.'); window.location.href='../halaman_utama.php'</script>";
+				echo "<script> alert('Terima Kasih Partisipasinya !! Admin pengelola akan me-review pengajuan anda.'); window.location.href='../index.php'</script>";
 			} else {
 				echo "<script> alert('Proses Gagal Silahkan Ulangi !'); window.history.back();</script>";
 			}	

@@ -15,7 +15,15 @@
 		} elseif ($type == "kirim_undangan") {
 			$email = $_POST['email'];
 			$a = array();
-			$x = mysql_query("SELECT count(*) as jumlah_result, file_photo as file_photo, id as id  FROM m_entrepreneur WHERE email = '$email' ") or die(mysql_error());
+			$x = mysql_query("SELECT count(*) as jumlah_result, file_photo as file_photo, id as id, nama as nama  FROM m_entrepreneur WHERE email = '$email' ") or die(mysql_error());
+			while ($arr=mysql_fetch_assoc($x)) {
+            	$a = $arr;
+            }
+            echo json_encode($a);
+		} elseif ($type == "tambah_karyawan") {
+			$email = $_POST['email'];
+			$a = array();
+			$x = mysql_query("SELECT count(*) as jumlah_result, file_photo as file_photo, id as id, nama as nama  FROM m_entrepreneur WHERE email = '$email' ") or die(mysql_error());
 			while ($arr=mysql_fetch_assoc($x)) {
             	$a = $arr;
             }

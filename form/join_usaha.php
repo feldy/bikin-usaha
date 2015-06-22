@@ -1,32 +1,93 @@
+<?php
+    $id_proposal = $_GET['id_proposal'];
+    $result = mysql_query("SELECT u.nama as nama_supplier, o.alamat as alamat, o.kota as kota, o.tanggal as tanggal, u.modal as modal, u.contact_supplier as contact_supplier, o.informasi_proposal as informasi_proposal, o.nama_proposal as nama_proposal, e.nama as nama_owner, u.pic_1 as pic_1, u.pic_2 as pic_2, u.pic_3 as pic_3, u.pic_4 as pic_4 FROM t_proposal_usaha o INNER JOIN m_entrepreneur e on o.id_owner = e.id INNER JOIN m_jenis_usaha u ON o.id_jenis_usaha = u.id where o.id = '$id_proposal'") or die(mysql_error());
+    $map = mysql_fetch_array($result);
+?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Proposal Usaha Ayam Goreng Kremes Mercu
+        <h1 class="page-header">PROPOSAL USAHA <?php echo strtoupper($map['nama_proposal']);?>
             <br />
-            <small>Owner: Feldy Yusuf</small>
+            <small>Owner: <?php echo strtoupper($map['nama_owner']);?></small>
         </h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+       <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
             <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                <?php
+                    $active = 0;
+                    $sActive = "";
+                    $pic1 = $map['pic_1'];   
+                    $pic2 = $map['pic_2'];   
+                    $pic3 = $map['pic_3'];   
+                    $pic4 = $map['pic_4'];   
+
+                    if ($pic1 != NULL && $pic1 != "") {
+                        $active = 1;
+                        echo '<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>';
+                    }
+
+                    if ($pic2 != NULL && $pic2 != "") {
+                        if ($active = 0) {
+                            $sActive = 'class="active"';
+                        }
+                        echo '<li data-target="#carousel-example-generic" data-slide-to="1" $sActive ></li>';
+                    }
+
+                    if ($pic3 != NULL && $pic3 != "") {
+                        if ($active = 0) {
+                            $sActive = 'class="active"';
+                        }
+                        echo '<li data-target="#carousel-example-generic" data-slide-to="2" $sActive ></li>';
+                    }
+
+                    if ($pic4 != NULL && $pic4 != "") {
+                        if ($active = 0) {
+                            $sActive = 'class="active"';
+                        }
+                        echo '<li data-target="#carousel-example-generic" data-slide-to="3" $sActive ></li>';
+                    }
+                ?>
             </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-                <div class="item active">
-                    <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-                </div>
+                 <?php
+                    $active = 0;
+                    $sActive = "";
+                    $pic1 = $map['pic_1'];   
+                    $pic2 = $map['pic_2'];   
+                    $pic3 = $map['pic_3'];   
+                    $pic4 = $map['pic_4'];   
+
+                    if ($pic1 != NULL && $pic1 != "") {
+                        $active = 1;
+                        echo '<div class="item active"><div style="background:url(upload/images/'.$pic1.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                    }
+
+                    if ($pic2 != NULL && $pic2 != "") {
+                        if ($active = 0) {
+                            $sActive = 'active';
+                        }
+                        echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic2.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                    }
+
+                    if ($pic3 != NULL && $pic3 != "") {
+                        if ($active = 0) {
+                            $sActive = 'active';
+                        }
+                        echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic3.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                    }
+
+                    if ($pic4 != NULL && $pic4 != "") {
+                        if ($active = 0) {
+                            $sActive = 'active';
+                        }
+                        echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic4.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                    }
+                ?>
             </div>
 
             <!-- Controls -->
@@ -39,15 +100,18 @@
         </div>
     </div>
     <div class="col-md-6">
-        <h3>Project Description</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-        <h3>Project Details</h3>
+        <h3>Deskripsi Usaha</h3>
+        <p><?php echo $map['informasi_proposal']?></p>
+        <p>Alamat: <?php echo $map['alamat']?></p>
+        <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $map['kota']; ?></h6>
+        <h3>Details</h3>
         <ul>
-            <li>Lorem Ipsum</li>
-            <li>Dolor Sit Amet</li>
-            <li>Consectetur</li>
-            <li>Adipiscing Elit</li>
+            <li>Modal :Rp. <?php echo number_format($map['modal']); ?> </li>
+            <li>Supplier: <?php echo $map['nama_supplier']; ?></li>
+            <li>Kontak: <?php echo $map['contact_supplier']; ?></li>
+            <li><?php echo date_format(date_create($map['tanggal']), "d/m/Y"); ?></li>
         </ul>
+        
     </div>
 </div>
 <div class="row">
@@ -105,11 +169,11 @@
                 <h3 class="panel-title">Lowongan Pegawai</h3>
             </div>
             <div class="panel-body">
-                <span class="price">Rp 3.500.000</span>
+                <span class="price">Rp 3500K</span>
                 <span class="period">gaji per bulan</span>
             </div>
             <ul class="list-group">
-                <li class="list-group-item">Untuk <strong>2</strong> orang</li>
+                <li class="list-group-item">Tersedia Untuk <strong>2</strong> orang</li>
                 <li class="list-group-item"><a href="#" class="btn btn-primary">Join Sebagai Karyawan!</a>
                 </li>
             </ul>

@@ -18,25 +18,25 @@
                         &nbsp;
                     </div> 
                     <div class="col-md-8" style="text-align: center;"> 
-                        <form name="sentMessage" id="contactForm" novalidate>
+                        <form action="system/login_service.php" method="post" name="sentMessage" id="contactForm" novalidate>
                             <div class="control-group form-group">
                                 <div class="controls">
-                                    <label>Username atau Email:</label>
-                                    <input type="text" class="form-control"  required data-validation-required-message="Masukan user atau email kamu donk !    ">
+                                    <label>Email:</label>
+                                    <input name="email"  type="text" class="form-control"  required data-validation-required-message="Masukan email kamu donk !    ">
                                     <p class="help-block"></p>
                                 </div>
                             </div>
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Password:</label>
-                                    <input type="password" class="form-control"  required data-validation-required-message="Masukan password kamu donk !    ">
+                                    <input  name="password" type="password" class="form-control"  required data-validation-required-message="Masukan password kamu donk !    ">
                                     <p class="help-block"></p>
                                 </div>
                             </div>
                             <div><a href="#">Lupa Password Kamu ?</a></div>
                             <div id="success"></div>
                             <!-- For success/fail messages -->
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" name="btn_login" class="btn btn-primary">Login</button>
                         </form>
                     </div>
                 </div>

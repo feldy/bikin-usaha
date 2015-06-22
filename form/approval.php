@@ -1,3 +1,11 @@
+<?php 
+
+session_start();
+if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
+    echo "<script>location='?page=login'</script>";
+    // echo "string";
+} else {
+?>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Approval
@@ -86,3 +94,4 @@
         </div>
     </div>
 </div>
+<?php } ?>

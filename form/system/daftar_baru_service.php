@@ -19,7 +19,7 @@
 		$numROW = mysql_num_rows($validasiEmail);
 
 		if ($numROW > 0) {
-			// echo "<script> alert('Maaf Entrepreneur lain sudah menggunakan Email anda! Silahkan ganti! '); window.history.back();</script>";
+			echo "<script> alert('Maaf Entrepreneur lain sudah menggunakan Email anda! Silahkan ganti! '); window.history.back();</script>";
 		} else {
 			$path = $_FILES['file']['name'];
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
@@ -35,9 +35,9 @@
 			// -- $result = "INSERT INTO m_entrepreneur VALUES('$id', '$email', '$password', '$nama', '$alamat', '$jk', '$tlp', '$ttl', '')";
 			
 			if ($result) {
-				// echo "<script> alert('Selamat Datang Entrepreneur Baru !! Silahkan Login yaa'); window.location.href='../halaman_utama.php?page=login'</script>";
+				echo "<script> alert('Selamat Datang Entrepreneur Baru !! Silahkan Login yaa'); window.location.href='../index.php?page=login'</script>";
 			} else {
-				// echo "<script> alert('Daftar Gagal Silahkan Ulangi !'); window.history.back();</script>";
+				echo "<script> alert('Daftar Gagal Silahkan Ulangi !'); window.history.back();</script>";
 			}	
 		}
 		

@@ -42,6 +42,15 @@ header.carousel .fill {
     background-size: cover;
 }
 
+.slider-size {
+    height: 250px; /* This is your slider height */
+}
+
+.carousel {
+    width:100%; 
+    margin:10 auto; /* center your carousel if other than 100% */ 
+}
+
 /* 404 Page Styles */
 
 .error-404 {

@@ -1,160 +1,257 @@
-<?php include "system/config_service.php";?>
-<?php include "system/gen_uuid_service.php";?>
+<!-- Header Carousel -->
+<header id="myCarousel" class="carousel slide">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Bikin-Usaha.com</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="../css/modern-business.css" rel="stylesheet">
-    <link href="lib/datepicker/css/bootstrap-datepicker3.standalone.css" rel="stylesheet">
-    <!-- Custom Fonts -->
-    <link href="../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Timeline CSS -->
-    <link href="../css/timeline.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="../css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- include summernote css/js-->
-    <link href="lib/editor/dist/summernote.css" rel="stylesheet">
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="halaman_utama.php">Bikin-Usaha.com</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <?php
-                        $activeStatus = "";
-                        if (isset($_GET['page'])) {
-                            if ($_GET['page'] == "login") {
-                                $activeStatus = "login";
-                            } elseif ($_GET['page'] == "daftar") {
-                                $activeStatus = "daftar";
-                            } elseif ($_GET['page'] == "approval") {
-                                $activeStatus = "approval";
-                            } elseif ($_GET['page'] == "jenis_usaha") {
-                                $activeStatus = "jenis_usaha";
-                            } elseif ($_GET['page'] == "proposalku") {
-                                $activeStatus = "proposalku";
-                            }  elseif ($_GET['page'] == "buat_proposal") {
-                                $activeStatus = "buat_proposal";
-                            } elseif ($_GET['page'] == "join_usaha") {
-                                $activeStatus = "join_usaha";
-                            }
-                        }
-                    ?>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li <?php if ($activeStatus == "buat_proposal") {echo "class='active'";} ?>>
-                                <a href="?page=buat_proposal">Buat Proposal Usaha</a>
-                            </li>
-                            <li <?php if ($activeStatus == "jenis_usaha") {echo "class='active'";} ?>>
-                                <a href="?page=jenis_usaha">Pengajuan Jenis Usaha Baru</a>
-                            </li>
-                            <li <?php if ($activeStatus == "approval") {echo "class='active'";} ?>>
-                                <a href="?page=approval">Approval</a>
-                            </li>
-                            <li <?php if ($activeStatus == "proposalku") {echo "class='active'";} ?>>
-                                <a href="?page=proposalku">ProposalKu</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li <?php if ($activeStatus == "daftar") {echo "class='active'";} ?>>
-                        <a href="?page=daftar">Coba Yuk Jadi Member!!</a>
-                    </li>
-                    <li <?php if ($activeStatus == "join_usaha") {echo "class='active'";} ?>>
-                        <a href="?page=join_usaha">Join!!</a>
-                    </li>
-                    <li <?php if ($activeStatus == "login") {echo "class='active'";} ?>>
-                        <a href="?page=login">Login</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-    <!-- Page Content -->
-    <div class="container">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
         <?php
-            if (isset($_GET['page'])) {
-                if ($_GET['page'] == "login") {
-                    include("login.php");
-                } elseif ($_GET['page'] == "daftar") {
-                    include("daftar_baru.php");
-                } elseif ($_GET['page'] == "jenis_usaha") {
-                    include("pengajuan_jenis_usaha_baru.php");
-                } elseif ($_GET['page'] == "approval") {
-                    include("approval.php");
-                } elseif ($_GET['page'] == "proposalku") {
-                    include("proposalku.php");
-                } elseif ($_GET['page'] == "buat_proposal") {
-                    include("buat_proposal.php");
-                } elseif ($_GET['page'] == "join_usaha") {
-                    include("join_usaha.php");
+            //find proposal paling terbaru (TODO: paling banyak klik atau Donatur terbesar)
+            $result = mysql_query("SELECT s.pic_1 as gambar1, o.nama_proposal as nama, o.id as id_proposal FROM t_proposal_usaha o INNER JOIN m_jenis_usaha s on o.id_jenis_usaha = s.id order by o.tanggal desc LIMIT 0, 10 ") or die(mysql_error());
+            $count = 0;
+            $active = "";
+            while($arr_result=mysql_fetch_array($result)){
+                if ($count == 0) {
+                    $active = "active";
+                } else {
+                    $active = "";
                 }
-            }            
-        ?>
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Feldy Yusuf 2015 | Universitas Mercubuana</p>
+                $count++;
+                $photo = $arr_result['gambar1'];
+                $id_proposal = $arr_result['id_proposal'];
+            ?>
+            <div class="item <?php echo $active; ?>">
+                <div class="fill" style="background-image:url('upload/images/<?php echo $photo; ?>');"></div>
+                <div class="carousel-caption" >
+                    
+                    <a href="?page=join_usaha&id_proposal=<?php echo $id_proposal; ?>" class="btn btn-primary">Join Usaha <?php echo $arr_result['nama'];?></a>
                 </div>
             </div>
-        </footer>
-
+        <?php } ?>
     </div>
-    <!-- /.container -->
 
-    <!-- jQuery -->
-    <script src="../js/jquery.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../js/bootstrap.min.js"></script>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
+</header>
 
-    <!-- //other lib -->
-    <script src="lib/datepicker/js/bootstrap-datepicker.js"></script>
-    <script src="lib/editor/dist/summernote.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/action.js"></script>
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+            
+        </div>
+    <!-- Marketing Icons Section -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Hot! Proposal
+            </h1>
+        </div>
+        <?php
+            //tampilkan semua proposal yang sudah dibuat berdasarkan lowongan investor dan karyawan yang available
+            $result = mysql_query("SELECT s.pic_1 as gambar1, o.nama_proposal as nama, o.id as id_proposal, o.informasi_proposal as informasi, o.kota as kota FROM t_proposal_usaha o INNER JOIN m_jenis_usaha s on o.id_jenis_usaha = s.id order by o.tanggal desc LIMIT 0, 10 ") or die(mysql_error());
+            $count = 0;
+            $active = "";
+            while($arr_result=mysql_fetch_array($result)){
+                $id_proposal = $arr_result['id_proposal'];
+                $photo = $arr_result['gambar1'];
+        ?>
+            <div class="col-md-4 img-portfolio">
+                <a href="?page=join_usaha&id_proposal=<?php echo $id_proposal; ?>">
+                    <img class="img-responsive img-hover" style="max-height: 125px;" src="upload/images/<?php echo $photo; ?>" alt="">
+                </a>
+                <h3>
+                    <a href="?page=join_usaha&id_proposal=<?php echo $id_proposal; ?>"><?php echo $arr_result['nama']; ?></a>
+                </h3>
+                <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $arr_result['kota']; ?></h6>
+                <p><?php echo $arr_result['informasi']; ?></p>
+            </div>
+        <!-- <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-fw fa-coffee"></i> <?php echo $arr_result['nama']; ?></h4>
+                </div>
+                <div class="panel-body">
+                    <img class="img-responsive" src="upload/images/<?php echo $photo; ?>" alt="">
+                    <br />
+                    <p><?php echo $arr_result['informasi']; ?></p>
+
+                    <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $arr_result['kota']; ?></h6>
+
+                    <a href="#" class="btn btn-default">Join Usaha</a>
+                </div>
+            </div>
+        </div> -->
+        <?php } ?>
+    </div>
+    <!-- /.row -->
+    <!-- Features Section -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Jenis Usaha Terbaru
+            </h1>
+
+        </div>
+    </div>
+    
+    <div class="row">
+        <?php 
+            $result = mysql_query("SELECT * FROM m_jenis_usaha o where o.is_active = 1  LIMIT 0, 5 ") or die(mysql_error());
+            $count = 0;
+            while($arr_result=mysql_fetch_array($result)){
+        ?>
+            <!-- <div class="row"> -->
+                <div class="col-md-6 img-portfolio">
+                    <div id="carousel-example-generic-<?php echo $count;?>" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <?php
+                                $active = 0;
+                                $sActive = "";
+                                $pic1 = $arr_result['pic_1'];   
+                                $pic2 = $arr_result['pic_2'];   
+                                $pic3 = $arr_result['pic_3'];   
+                                $pic4 = $arr_result['pic_4'];   
+
+                                if ($pic1 != NULL && $pic1 != "") {
+                                    $active = 1;
+                                    echo '<li data-target="#carousel-example-generic-'.$count.'" data-slide-to="0" class="active"></li>';
+                                }
+
+                                if ($pic2 != NULL && $pic2 != "") {
+                                    if ($active = 0) {
+                                        $sActive = 'class="active"';
+                                    }
+                                    echo '<li data-target="#carousel-example-generic-'.$count.'" data-slide-to="1" $sActive ></li>';
+                                }
+
+                                if ($pic3 != NULL && $pic3 != "") {
+                                    if ($active = 0) {
+                                        $sActive = 'class="active"';
+                                    }
+                                    echo '<li data-target="#carousel-example-generic-'.$count.'" data-slide-to="2" $sActive ></li>';
+                                }
+
+                                if ($pic4 != NULL && $pic4 != "") {
+                                    if ($active = 0) {
+                                        $sActive = 'class="active"';
+                                    }
+                                    echo '<li data-target="#carousel-example-generic-'.$count.'" data-slide-to="3" $sActive ></li>';
+                                }
+                            ?>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                             <?php
+                                $active = 0;
+                                $sActive = "";
+                                $pic1 = $arr_result['pic_1'];   
+                                $pic2 = $arr_result['pic_2'];   
+                                $pic3 = $arr_result['pic_3'];   
+                                $pic4 = $arr_result['pic_4'];   
+
+                                if ($pic1 != NULL && $pic1 != "") {
+                                    $active = 1;
+                                    echo '<div class="item active"><div style="background:url(upload/images/'.$pic1.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                                }
+
+                                if ($pic2 != NULL && $pic2 != "") {
+                                    if ($active = 0) {
+                                        $sActive = 'active';
+                                    }
+                                    echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic2.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                                }
+
+                                if ($pic3 != NULL && $pic3 != "") {
+                                    if ($active = 0) {
+                                        $sActive = 'active';
+                                    }
+                                    echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic3.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                                }
+
+                                if ($pic4 != NULL && $pic4 != "") {
+                                    if ($active = 0) {
+                                        $sActive = 'active';
+                                    }
+                                    echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic4.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                                }
 
 
-    <!-- Contact Form JavaScript -->
-    <!-- Do not edit these files! In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
-    <script src="../js/jqBootstrapValidation.js"></script>
-    <!-- // <script src="../js/contact_me.js"></script> -->
+                                // if ($pic1 != NULL && $pic1 != "") {
+                                //     $active = 1;
+                                //     echo '<div class="item active"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic1.'" alt=""></div>';
+                                // }
 
-</body>
+                                // if ($pic2 != NULL && $pic2 != "") {
+                                //     if ($active = 0) {
+                                //         $sActive = 'active';
+                                //     }
+                                //     echo '<div class="item $sActive"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic2.'" alt=""></div>';
+                                // }
 
-</html>
+                                // if ($pic3 != NULL && $pic3 != "") {
+                                //     if ($active = 0) {
+                                //         $sActive = 'active';
+                                //     }
+                                //     echo '<div class="item $sActive"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic3.'" alt=""></div>';
+                                // }
+
+                                // if ($pic4 != NULL && $pic4 != "") {
+                                //     if ($active = 0) {
+                                //         $sActive = 'active';
+                                //     }
+                                //     echo '<div class="item $sActive"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic4.'" alt=""></div>';
+                                // }
+                            ?>
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic-<?php echo $count;?>" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic-<?php echo $count;?>" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                    <h3>
+                        <a href="#"><?php echo $arr_result['nama']; ?></a>
+                    </h3>
+                    <ul>
+                        <li>Modal <strong>Rp. <?php echo number_format($arr_result['modal'], 0); ?></strong>
+                        </li>
+                        <li>Membutuhkan <strong><?php echo number_format($arr_result['max_jumlah_pegawai'], 0); ?> Orang</strong> Pegawai</li>
+                        <li>Kategori <strong><?php echo $arr_result['kategori_jenis']; ?></strong></li>
+                    </ul>
+                    <p><?php echo $arr_result['deskripsi']; ?></p>
+                </div>
+
+            <!-- </div> -->
+           <!--  <div class="col-md-6">
+                <h2><?php echo $arr_result['nama']; ?></h2>
+                <ul>
+                    <li>Modal <strong>Rp. <?php echo number_format($arr_result['modal'], 0); ?></strong>
+                    </li>
+                    <li>Membutuhkan <strong><?php echo number_format($arr_result['max_jumlah_pegawai'], 0); ?> Orang</strong> Pegawai</li>
+                    <li>Kategori <strong><?php echo $arr_result['kategori_jenis']; ?></strong></li>
+                </ul>
+                <p><?php echo $arr_result['deskripsi']; ?></p>
+            </div>
+            
+        <hr /> -->
+        <?php 
+                $count++;
+            } 
+        ?>
+    </div>
+    <!-- /.row -->
+</div> 
