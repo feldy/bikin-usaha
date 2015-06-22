@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2015 at 01:06 AM
+-- Generation Time: Jun 16, 2015 at 06:40 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -44,8 +44,7 @@ CREATE TABLE IF NOT EXISTS `m_entrepreneur` (
 --
 
 INSERT INTO `m_entrepreneur` (`id`, `email`, `password`, `nama`, `alamat`, `jenis_kelamin`, `no_telepon`, `ttl`, `file_photo`, `file_biodata`) VALUES
-('1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'user@user.com', '12345', 'Test', 'wfjowieufowifuwoiu', 'Laki-Laki', '32987427', 'skjdfhskj, 06/06/2015', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg'),
-('858ee057-2ea9-40bf-9b5e-8ee842cff391', 'feldy.ys@gmail.com', '12345', 'Feldy Yusuf', 'Depok', 'Laki-Laki', '1234567890', 'Jakarta, 09/06/2015', '858ee057-2ea9-40bf-9b5e-8ee842cff391.jpg', '858ee057-2ea9-40bf-9b5e-8ee842cff391.docx');
+('1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'lsdkf@jksh.com', 'skjdhf', 'Test', 'wfjowieufowifuwoiu', 'Laki-Laki', '32987427', 'skjdfhskj, 06/06/2015', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg');
 
 -- --------------------------------------------------------
 
@@ -74,8 +73,7 @@ CREATE TABLE IF NOT EXISTS `m_jenis_usaha` (
 --
 
 INSERT INTO `m_jenis_usaha` (`id`, `nama`, `contact_supplier`, `kategori_jenis`, `modal`, `max_jumlah_pegawai`, `deskripsi`, `pic_1`, `pic_2`, `pic_3`, `pic_4`, `doc`, `is_active`) VALUES
-('a72a8470-6f8c-4075-83ee-a503e05db0f9', 'SABANA FRIED CHICKEN', '021878777473', 'Franchise Makanan', '35000000', 1, '<p><span style="font-weight: bold;">DESKRIPSI <span style="text-decoration: line-through;">INI <span style="color: rgb(156, 0, 0);">sdhkjdfhkshfskjdhfsdf</span></span></span></p>', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file1.png', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file2.jpg', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file3.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file4.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file_doc.docx', 1),
-('af38d7e2-db9a-4097-99e3-fc0cd11dfe9f', 'DE BESTO', '564789364', 'Franchise Makanan', '50000000', 3, 'INI AYAM', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f_file1.jpg', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f_file2.jpg', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f_file3.jpg', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f_file4.jpg', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f_file_doc.jpg', 1);
+('a72a8470-6f8c-4075-83ee-a503e05db0f9', 'SABANA FRIED CHICKEN', '021878777473', 'Franchise Makanan', '35000000', 1, '<p><span style="font-weight: bold;">DESKRIPSI <span style="text-decoration: line-through;">INI <span style="color: rgb(156, 0, 0);">sdhkjdfhkshfskjdhfsdf</span></span></span></p>', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file1.png', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file2.jpg', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file3.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file4.', 'a72a8470-6f8c-4075-83ee-a503e05db0f9_file_doc.docx', 0);
 
 -- --------------------------------------------------------
 
@@ -113,31 +111,6 @@ CREATE TABLE IF NOT EXISTS `m_schedule` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `m_undangan`
---
-
-CREATE TABLE IF NOT EXISTS `m_undangan` (
-  `id` varchar(36) NOT NULL,
-  `from_id` varchar(36) NOT NULL,
-  `to_id` varchar(36) NOT NULL,
-  `proposal_id` varchar(36) DEFAULT NULL,
-  `tanggal` datetime DEFAULT NULL,
-  `keterangan` text,
-  `is_read` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `m_undangan`
---
-
-INSERT INTO `m_undangan` (`id`, `from_id`, `to_id`, `proposal_id`, `tanggal`, `keterangan`, `is_read`) VALUES
-('1d2d5f14-eccd-4fc2-a4c1-6e465ea32888', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '2015-06-20 23:44:04', 'Undangan Join Usaha', 0),
-('8fc496f5-958b-433e-b552-8d7ab8edd8d8', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '2015-06-20 12:35:29', 'Undangan Join Usaha', 0),
-('ef76b9e3-f78a-4756-8d70-3eec6be9ccd2', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '2015-06-20 12:35:29', 'Undangan Join Usaha', 0);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `t_anggota_proposal_usaha`
 --
 
@@ -165,21 +138,9 @@ CREATE TABLE IF NOT EXISTS `t_proposal_usaha` (
   `id_jenis_usaha` varchar(36) NOT NULL,
   `nama_proposal` varchar(50) NOT NULL,
   `informasi_proposal` text,
-  `alamat` varchar(50) NOT NULL,
-  `kota` varchar(50) NOT NULL,
   `max_jumlah_investor` int(3) NOT NULL,
-  `nilai_persentase_investor` varchar(50) NOT NULL,
-  `nilai_persentase_owner` int(3) NOT NULL DEFAULT '0',
   `tanggal` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `t_proposal_usaha`
---
-
-INSERT INTO `t_proposal_usaha` (`id`, `id_owner`, `id_jenis_usaha`, `nama_proposal`, `informasi_proposal`, `alamat`, `kota`, `max_jumlah_investor`, `nilai_persentase_investor`, `nilai_persentase_owner`, `tanggal`) VALUES
-('3e276ad9-44a1-4793-ae68-728c9f56bc24', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'a72a8470-6f8c-4075-83ee-a503e05db0f9', 'Proposal 1', 'Proposal <span style="text-decoration: line-through;">1</span>', '', 'Jakarta Selatan', 2, '25,25', 50, '2015-06-20'),
-('7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '858ee057-2ea9-40bf-9b5e-8ee842cff391', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f', 'BESTO MERAPI', 'hehehe', '', 'Depok', 3, '10,20,20', 50, '2015-06-20');
 
 --
 -- Indexes for dumped tables
@@ -208,12 +169,6 @@ ALTER TABLE `m_pegawai_not_user`
 --
 ALTER TABLE `m_schedule`
  ADD PRIMARY KEY (`id`), ADD KEY `m_schedule_fk1` (`id_proposal`), ADD KEY `m_schedule_fk2` (`id_entreprener`);
-
---
--- Indexes for table `m_undangan`
---
-ALTER TABLE `m_undangan`
- ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `t_anggota_proposal_usaha`
