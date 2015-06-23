@@ -1,6 +1,26 @@
 <?php
     $id_proposal = $_GET['id_proposal'];
-    $result = mysql_query("SELECT u.nama as nama_supplier, o.alamat as alamat, o.kota as kota, o.tanggal as tanggal, u.modal as modal, u.contact_supplier as contact_supplier, o.informasi_proposal as informasi_proposal, o.nama_proposal as nama_proposal, e.nama as nama_owner, u.pic_1 as pic_1, u.pic_2 as pic_2, u.pic_3 as pic_3, u.pic_4 as pic_4 FROM t_proposal_usaha o INNER JOIN m_entrepreneur e on o.id_owner = e.id INNER JOIN m_jenis_usaha u ON o.id_jenis_usaha = u.id where o.id = '$id_proposal'") or die(mysql_error());
+    $result = mysql_query("SELECT   o.nilai_persentase_investor as nilai_persentase_investor, 
+                                    o.alamat as alamat, 
+                                    o.kota as kota, 
+                                    o.tanggal as tanggal, 
+                                    o.informasi_proposal as informasi_proposal, 
+                                    o.nama_proposal as nama_proposal, 
+                                    o.gaji_pegawai as gaji_pegawai, 
+                                    e.nama as nama_owner, 
+                                    u.nama as nama_supplier,  
+                                    u.modal as modal, 
+                                    u.contact_supplier as contact_supplier, 
+                                    u.pic_1 as pic_1, 
+                                    u.pic_2 as pic_2, 
+                                    u.pic_3 as pic_3, 
+                                    u.pic_4 as pic_4 
+                        FROM        t_proposal_usaha o 
+                        INNER JOIN  m_entrepreneur e ON o.id_owner = e.id 
+                        INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id 
+                        WHERE       o.id = '$id_proposal'
+                        GROUP BY    o.id
+                        ") or die(mysql_error());
     $map = mysql_fetch_array($result);
 ?>
 <div class="row">
@@ -118,63 +138,60 @@
     &nbsp;
 </div>
 <div class="row">
+    <?php
+        //QUERY UNTUK SELISIH INVESTOR
+        $qry2 = mysql_query("SELECT     *
+                            FROM        m_investasi i
+                            WHERE       i.id_proposal = '$id_proposal'
+                            AND         i.id not in (SELECT id_nilai_investasi FROM t_anggota_proposal_usaha apu WHERE apu.status = 'APPROVED' and apu.tipe_anggota = 'investor' and apu.id_proposal_usaha = '$id_proposal')") or die(mysql_error());
+        $index = 0;
+        while ($arrQry2 = mysql_fetch_array($qry2)) {
+        $index++;
+        
+    ?>
     <div class="col-md-3">
         <div class="panel panel-default text-center">
             <div class="panel-heading">
-                <h3 class="panel-title">Investor 1</h3>
+                <h3 class="panel-title">Investor <?php echo $index; ?></h3>
             </div>
             <div class="panel-body">
-                <span class="price">15<sup>%</sup></span>
+                <span class="price"><?php echo number_format($arrQry2['nilai']); ?><sup>%</sup></span>
                 <span class="period">nilai investasi</span>
             </div>
             <ul class="list-group">
-                <li class="list-group-item"><a href="#" class="btn btn-primary">Join Sebagai Investor!</a>
+                <li class="list-group-item"><a href="system/buat_anggota_proposal_service.php?id_proposal=<?php echo $id_proposal;?>&id_nilai_investasi=<?php echo $arrQry2['id']; ?>&tipe_anggota=investor" class="btn btn-primary">Join Sebagai Investor!</a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="panel panel-default text-center">
-            <div class="panel-heading">
-                <h3 class="panel-title">Investor 2</h3>
-            </div>
-            <div class="panel-body">
-                <span class="price">20<sup>%</sup></span>
-                <span class="period">nilai investasi</span>
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="#" class="btn btn-primary">Join Sebagai Investor!</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="panel panel-default text-center">
-            <div class="panel-heading">
-                <h3 class="panel-title">Investor 3</h3>
-            </div>
-            <div class="panel-body">
-                <span class="price">25<sup>%</sup></span>
-                <span class="period">nilai investasi</span>
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="#" class="btn btn-primary">Join Sebagai Investor!</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <?php 
+            
+        } 
+
+        $gaji = $map['gaji_pegawai'];
+        $gaji = $gaji/1000;
+        //QUERY UNTUK SELISIH PEGAWAI
+        $qry1 = mysql_query("   SELECT      (ju.max_jumlah_pegawai - count(apu.id)) as lowongan_tersedia
+                                FROM        t_proposal_usaha pu
+                                INNER JOIN  m_jenis_usaha ju ON pu.id_jenis_usaha = ju.id
+                                LEFT JOIN   t_anggota_proposal_usaha apu ON apu.id_proposal_usaha = pu.id and apu.status = 'APPROVED' and apu.tipe_anggota = 'pegawai'
+                                WHERE       pu.id = '$id_proposal'") or die(mysql_error());
+        $result1 = mysql_fetch_array($qry1);
+
+
+    ?>
     <div class="col-md-3">
         <div class="panel panel-primary text-center">
             <div class="panel-heading">
                 <h3 class="panel-title">Lowongan Pegawai</h3>
             </div>
             <div class="panel-body">
-                <span class="price">Rp 3500K</span>
+                <span class="price"><sup>Rp</sup><?php echo number_format($gaji); ?>K</span>
                 <span class="period">gaji per bulan</span>
             </div>
             <ul class="list-group">
-                <li class="list-group-item">Tersedia Untuk <strong>2</strong> orang</li>
-                <li class="list-group-item"><a href="#" class="btn btn-primary">Join Sebagai Karyawan!</a>
+                <li class="list-group-item">Tersedia Untuk <strong><?php echo $result1['lowongan_tersedia']; ?></strong> orang</li>
+                <li class="list-group-item"><a href="system/buat_anggota_proposal_service.php?id_proposal=<?php echo $id_proposal;?>&id_nilai_investasi=NULL&tipe_anggota=pegawai" class="btn btn-primary">Join Sebagai Karyawan!</a>
                 </li>
             </ul>
         </div>

@@ -15,6 +15,7 @@
 		$max_jumlah_investor = $_POST['max_jumlah_investor'];
 		$nilai_persentase_investor = $_POST['nilai_persentase_investor'];
 		$nilai_persentase_owner = $_POST['nilai_persentase_owner'];
+		$nilai_gaji_pegawai = $_POST['nilai_gaji_pegawai'];
 
 
 
@@ -24,17 +25,24 @@
 		if ($numROW > 0) {
 			echo "Maaf Entrepreneur lain sudah menggunakan Nama Proposal Ini anda! Silahkan ganti! ";
 		} else {
-			$str_query = "INSERT INTO t_proposal_usaha VALUES('$id', '$owner_id', '$supplier', '$nama_proposal', '$deskripsi', '$alamat','$kota', $max_jumlah_investor, '$nilai_persentase_investor', $nilai_persentase_owner, now())";
+			$str_query = "INSERT INTO t_proposal_usaha VALUES('$id', '$owner_id', '$supplier', '$nama_proposal', '$deskripsi', '$alamat','$kota', $max_jumlah_investor, '$nilai_persentase_investor', $nilai_persentase_owner, $nilai_gaji_pegawai, now())";
 			$result = mysql_query($str_query) or die(mysql_error());
 
 
 			if ($result) {
 				$e = explode(",", $data_undangan);
+				$f = explode(",", $nilai_persentase_investor);
 				for($i = 0; $i < count($e); $i++) {
 					$id_detail = gen_uuid();
 					$idEntrepreneur = $e[$i];
 
 				   	mysql_query("INSERT INTO m_undangan VALUES('$id_detail', '$owner_id', '$idEntrepreneur', '$id', now(), 'Undangan Join Usaha', 0)") or die(mysql_error());
+				}
+				for($i = 0; $i < count($f); $i++) {
+					$id_detail = gen_uuid();
+					$nilai = $f[$i];
+
+				   	mysql_query("INSERT INTO m_investasi VALUES('$id_detail', '$id', $nilai)") or die(mysql_error());
 				}
 				echo "";
 			} else {

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2015 at 01:56 AM
+-- Generation Time: Jun 23, 2015 at 01:06 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -46,29 +46,6 @@ CREATE TABLE IF NOT EXISTS `m_entrepreneur` (
 INSERT INTO `m_entrepreneur` (`id`, `email`, `password`, `nama`, `alamat`, `jenis_kelamin`, `no_telepon`, `ttl`, `file_photo`, `file_biodata`) VALUES
 ('1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'user@user.com', '12345', 'Test', 'wfjowieufowifuwoiu', 'Laki-Laki', '32987427', 'skjdfhskj, 06/06/2015', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg', '1b8a1a89-7477-45b9-af45-8386aa8b5f88.jpg'),
 ('858ee057-2ea9-40bf-9b5e-8ee842cff391', 'feldy.ys@gmail.com', '12345', 'Feldy Yusuf', 'Depok', 'Laki-Laki', '1234567890', 'Jakarta, 09/06/2015', '858ee057-2ea9-40bf-9b5e-8ee842cff391.jpg', '858ee057-2ea9-40bf-9b5e-8ee842cff391.docx');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `m_investasi`
---
-
-CREATE TABLE IF NOT EXISTS `m_investasi` (
-  `id` varchar(36) NOT NULL,
-  `id_proposal` varchar(36) NOT NULL,
-  `nilai` decimal(19,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `m_investasi`
---
-
-INSERT INTO `m_investasi` (`id`, `id_proposal`, `nilai`) VALUES
-('0ea911d4-19c0-11e5-af81-1c4bd610cb0e', '7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '20.00'),
-('0ea922b0-19c0-11e5-af81-1c4bd610cb0e', '7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '20.00'),
-('0ea922b0-29c0-11e5-af81-1c4bd610cb0e', '7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '10.00'),
-('0fc911d4-19c0-11e4-af81-1c4bd610cb0e', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '25.00'),
-('0fc911d4-19c0-11e5-af81-1c4bd610cb0e', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '25.00');
 
 -- --------------------------------------------------------
 
@@ -169,19 +146,12 @@ CREATE TABLE IF NOT EXISTS `t_anggota_proposal_usaha` (
   `id_proposal_usaha` varchar(36) NOT NULL,
   `id_entrepreneur` varchar(36) DEFAULT NULL,
   `id_pegawai_not_user` varchar(36) DEFAULT NULL,
-  `id_nilai_investasi` varchar(36) DEFAULT NULL,
+  `nilai_investasi` decimal(19,0) NOT NULL DEFAULT '0',
   `tipe_anggota` varchar(20) NOT NULL,
+  `gaji` decimal(19,0) NOT NULL DEFAULT '0',
   `status` varchar(15) NOT NULL,
   `tanggal` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `t_anggota_proposal_usaha`
---
-
-INSERT INTO `t_anggota_proposal_usaha` (`id`, `id_proposal_usaha`, `id_entrepreneur`, `id_pegawai_not_user`, `id_nilai_investasi`, `tipe_anggota`, `status`, `tanggal`) VALUES
-('1425346e-de1e-40f7-ae72-2235ec529177', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '858ee057-2ea9-40bf-9b5e-8ee842cff391', NULL, '0fc911d4-19c0-11e5-af81-1c4bd610cb0e', 'investor', 'NEW', '2015-06-24 00:29:07'),
-('c118992c-0ccf-4ccd-a2ce-456b9b1a9a9c', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '858ee057-2ea9-40bf-9b5e-8ee842cff391', NULL, NULL, 'pegawai', 'NEW', '2015-06-24 00:28:51');
 
 -- --------------------------------------------------------
 
@@ -200,7 +170,6 @@ CREATE TABLE IF NOT EXISTS `t_proposal_usaha` (
   `max_jumlah_investor` int(3) NOT NULL,
   `nilai_persentase_investor` varchar(50) NOT NULL,
   `nilai_persentase_owner` int(3) NOT NULL DEFAULT '0',
-  `gaji_pegawai` decimal(19,4) NOT NULL DEFAULT '0.0000',
   `tanggal` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -208,9 +177,9 @@ CREATE TABLE IF NOT EXISTS `t_proposal_usaha` (
 -- Dumping data for table `t_proposal_usaha`
 --
 
-INSERT INTO `t_proposal_usaha` (`id`, `id_owner`, `id_jenis_usaha`, `nama_proposal`, `informasi_proposal`, `alamat`, `kota`, `max_jumlah_investor`, `nilai_persentase_investor`, `nilai_persentase_owner`, `gaji_pegawai`, `tanggal`) VALUES
-('3e276ad9-44a1-4793-ae68-728c9f56bc24', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'a72a8470-6f8c-4075-83ee-a503e05db0f9', 'Proposal 1', 'Proposal <span style="text-decoration: line-through;">1</span>', '', 'Jakarta Selatan', 2, '25,25', 50, '3000000.0000', '2015-06-20'),
-('7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '858ee057-2ea9-40bf-9b5e-8ee842cff391', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f', 'BESTO MERAPI', 'hehehe', '', 'Depok', 3, '10,20,20', 50, '1500000.0000', '2015-06-20');
+INSERT INTO `t_proposal_usaha` (`id`, `id_owner`, `id_jenis_usaha`, `nama_proposal`, `informasi_proposal`, `alamat`, `kota`, `max_jumlah_investor`, `nilai_persentase_investor`, `nilai_persentase_owner`, `tanggal`) VALUES
+('3e276ad9-44a1-4793-ae68-728c9f56bc24', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', 'a72a8470-6f8c-4075-83ee-a503e05db0f9', 'Proposal 1', 'Proposal <span style="text-decoration: line-through;">1</span>', '', 'Jakarta Selatan', 2, '25,25', 50, '2015-06-20'),
+('7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '858ee057-2ea9-40bf-9b5e-8ee842cff391', 'af38d7e2-db9a-4097-99e3-fc0cd11dfe9f', 'BESTO MERAPI', 'hehehe', '', 'Depok', 3, '10,20,20', 50, '2015-06-20');
 
 --
 -- Indexes for dumped tables
@@ -221,12 +190,6 @@ INSERT INTO `t_proposal_usaha` (`id`, `id_owner`, `id_jenis_usaha`, `nama_propos
 --
 ALTER TABLE `m_entrepreneur`
  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `m_investasi`
---
-ALTER TABLE `m_investasi`
- ADD PRIMARY KEY (`id`), ADD KEY `m_investasi_fk1` (`id_proposal`);
 
 --
 -- Indexes for table `m_jenis_usaha`
@@ -250,13 +213,13 @@ ALTER TABLE `m_schedule`
 -- Indexes for table `m_undangan`
 --
 ALTER TABLE `m_undangan`
- ADD PRIMARY KEY (`id`), ADD KEY `m_undangan_fk1` (`proposal_id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `t_anggota_proposal_usaha`
 --
 ALTER TABLE `t_anggota_proposal_usaha`
- ADD PRIMARY KEY (`id`), ADD KEY `t_anggota_proposal_usaha_fk1` (`id_proposal_usaha`), ADD KEY `t_anggota_proposal_usaha_fk2` (`id_entrepreneur`), ADD KEY `t_anggota_proposal_usaha_fk3` (`id_pegawai_not_user`), ADD KEY `t_anggota_proposal_usaha_fk4` (`id_nilai_investasi`);
+ ADD PRIMARY KEY (`id`), ADD KEY `t_anggota_proposal_usaha_fk1` (`id_proposal_usaha`), ADD KEY `t_anggota_proposal_usaha_fk2` (`id_entrepreneur`), ADD KEY `t_anggota_proposal_usaha_fk3` (`id_pegawai_not_user`);
 
 --
 -- Indexes for table `t_proposal_usaha`
@@ -267,12 +230,6 @@ ALTER TABLE `t_proposal_usaha`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `m_investasi`
---
-ALTER TABLE `m_investasi`
-ADD CONSTRAINT `m_investasi_fk1` FOREIGN KEY (`id_proposal`) REFERENCES `t_proposal_usaha` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `m_pegawai_not_user`
@@ -288,19 +245,12 @@ ADD CONSTRAINT `m_schedule_fk1` FOREIGN KEY (`id_proposal`) REFERENCES `t_propos
 ADD CONSTRAINT `m_schedule_fk2` FOREIGN KEY (`id_entreprener`) REFERENCES `m_entrepreneur` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `m_undangan`
---
-ALTER TABLE `m_undangan`
-ADD CONSTRAINT `m_undangan_fk1` FOREIGN KEY (`proposal_id`) REFERENCES `t_proposal_usaha` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `t_anggota_proposal_usaha`
 --
 ALTER TABLE `t_anggota_proposal_usaha`
 ADD CONSTRAINT `t_anggota_proposal_usaha_fk1` FOREIGN KEY (`id_proposal_usaha`) REFERENCES `t_proposal_usaha` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `t_anggota_proposal_usaha_fk2` FOREIGN KEY (`id_entrepreneur`) REFERENCES `m_entrepreneur` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `t_anggota_proposal_usaha_fk3` FOREIGN KEY (`id_pegawai_not_user`) REFERENCES `m_pegawai_not_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `t_anggota_proposal_usaha_fk4` FOREIGN KEY (`id_nilai_investasi`) REFERENCES `m_investasi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `t_anggota_proposal_usaha_fk3` FOREIGN KEY (`id_pegawai_not_user`) REFERENCES `m_pegawai_not_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `t_proposal_usaha`

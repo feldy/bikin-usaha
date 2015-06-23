@@ -194,6 +194,7 @@ $(function() {
 			data_undangan 	: dataUndangan.toString(),
 			max_jumlah_investor : jumlahInvestor,
 			nilai_persentase_investor : nilaiPersentase.toString(),
+			nilai_gaji_pegawai : $('#nilai_gaji_pegawai').val(),
 			nilai_persentase_owner : $('#nilai_investasi_owner').val()
 		}
 

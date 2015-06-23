@@ -164,6 +164,13 @@
                                         >
                                         <span class="input-group-addon">% (Owner)</span>
                                     </div>
+                                    <label>Setting Nilai Gaji Pegawai :</label>
+                                    <div class="form-group input-group">
+                                        <input id="nilai_gaji_pegawai" type="text" class="form-control"
+                                        data-validation-number-message="Isi harus angka !"
+                                        placeholder="Rp"
+                                        >
+                                    </div>
                                     <label>Setting Proposal Jumlah Maksimum Investor:</label>
                                     <div class="form-group input-group">
                                         <input type="number" id="setting_investor" class="form-control"
