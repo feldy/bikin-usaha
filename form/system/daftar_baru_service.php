@@ -31,7 +31,7 @@
 			$fileName2 = $id.".".$ext2;
 			move_uploaded_file($_FILES['file2']['tmp_name'], '../upload/photo_profile/'.$fileName2);
 
-			$result = mysql_query("INSERT INTO m_entrepreneur VALUES('$id', '$email', '$password', '$nama', '$alamat', '$jk', '$tlp', '$ttl', '$fileName2',  '$fileName')");
+			$result = mysql_query("INSERT INTO m_entrepreneur VALUES('$id', '$email', '$password', '$nama', '$alamat', '$jk', '$tlp', '$ttl', '$fileName2',  '$fileName', now())");
 			// -- $result = "INSERT INTO m_entrepreneur VALUES('$id', '$email', '$password', '$nama', '$alamat', '$jk', '$tlp', '$ttl', '')";
 			
 			if ($result) {

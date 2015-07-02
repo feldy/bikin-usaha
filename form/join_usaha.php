@@ -9,6 +9,7 @@
                                     o.gaji_pegawai as gaji_pegawai, 
                                     e.nama as nama_owner, 
                                     u.nama as nama_supplier,  
+                                    u.deskripsi as u_deskripsi,  
                                     u.modal as modal, 
                                     u.contact_supplier as contact_supplier, 
                                     u.pic_1 as pic_1, 
@@ -120,7 +121,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <h3>Deskripsi Usaha</h3>
+        <h3>Deskripsi Proposal</h3>
         <p><?php echo $map['informasi_proposal']?></p>
         <p>Alamat: <?php echo $map['alamat']?></p>
         <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $map['kota']; ?></h6>
@@ -135,9 +136,17 @@
     </div>
 </div>
 <div class="row">
-    &nbsp;
+    <div class="col-md-12">
+        <h1 class="page-header">Informasi Usaha</h1>
+        <p><?php echo $map['u_deskripsi'] ;?></p>
+    </div>
 </div>
 <div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Hayooo minat gabung yang mana?
+        </h1>
+    </div>
     <?php
         //QUERY UNTUK SELISIH INVESTOR
         $qry2 = mysql_query("SELECT     *
@@ -164,22 +173,19 @@
             </ul>
         </div>
     </div>
-    <?php 
-            
-        } 
+        <?php 
+            } 
 
-        $gaji = $map['gaji_pegawai'];
-        $gaji = $gaji/1000;
-        //QUERY UNTUK SELISIH PEGAWAI
-        $qry1 = mysql_query("   SELECT      (ju.max_jumlah_pegawai - count(apu.id)) as lowongan_tersedia
-                                FROM        t_proposal_usaha pu
-                                INNER JOIN  m_jenis_usaha ju ON pu.id_jenis_usaha = ju.id
-                                LEFT JOIN   t_anggota_proposal_usaha apu ON apu.id_proposal_usaha = pu.id and apu.status = 'APPROVED' and apu.tipe_anggota = 'pegawai'
-                                WHERE       pu.id = '$id_proposal'") or die(mysql_error());
-        $result1 = mysql_fetch_array($qry1);
-
-
-    ?>
+            $gaji = $map['gaji_pegawai'];
+            $gaji = $gaji/1000;
+            //QUERY UNTUK SELISIH PEGAWAI
+            $qry1 = mysql_query("   SELECT      (ju.max_jumlah_pegawai - count(apu.id)) as lowongan_tersedia
+                                    FROM        t_proposal_usaha pu
+                                    INNER JOIN  m_jenis_usaha ju ON pu.id_jenis_usaha = ju.id
+                                    LEFT JOIN   t_anggota_proposal_usaha apu ON apu.id_proposal_usaha = pu.id and apu.status = 'APPROVED' and apu.tipe_anggota = 'pegawai'
+                                    WHERE       pu.id = '$id_proposal'") or die(mysql_error());
+            $result1 = mysql_fetch_array($qry1);
+        ?>
     <div class="col-md-3">
         <div class="panel panel-primary text-center">
             <div class="panel-heading">

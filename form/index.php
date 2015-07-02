@@ -1,5 +1,8 @@
 <?php include "system/config_service.php";?>
 <?php include "system/gen_uuid_service.php";?>
+<?php include "system/gen_tanggal.php";
+session_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,6 +88,8 @@
                                 $activeStatus = "join_usaha";
                             }
                         }
+                        if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
+                        } else {
                     ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
@@ -98,20 +103,46 @@
                             <li <?php if ($activeStatus == "approval") {echo "class='active'";} ?>>
                                 <a href="?page=approval">Approval</a>
                             </li>
-                            <li <?php if ($activeStatus == "proposalku") {echo "class='active'";} ?>>
-                                <a href="?page=proposalku">ProposalKu</a>
-                            </li>
                         </ul>
                     </li>
+                    <?php } 
+                    if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
+                    ?>
                     <li <?php if ($activeStatus == "daftar") {echo "class='active'";} ?>>
                         <a href="?page=daftar">Coba Yuk Jadi Member!!</a>
                     </li>
-                    <li <?php if ($activeStatus == "join_usaha") {echo "class='active'";} ?>>
-                        <a href="?page=join_usaha">Join!!</a>
-                    </li>
+                    <?php 
+                    }
+                        if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
+                    ?>    
                     <li <?php if ($activeStatus == "login") {echo "class='active'";} ?>>
                         <a href="?page=login">Login</a>
                     </li>
+                    <?php
+                        } else {
+                    ?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Proposalku <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <?php 
+                                $id_proposal = "";
+                                if (isset($_GET['id_proposal'])) {
+                                    $id_proposal = $_GET['id_proposal'];
+                                }
+                                $user_sid = $_SESSION['user_sid'];
+                                $result = mysql_query("SELECT * FROM t_proposal_usaha o where o.id_owner = '$user_sid' ") or die(mysql_error());
+                                while($arr_result=mysql_fetch_array($result)){
+                            ?>
+                            <li <?php if($id_proposal == $arr_result['id']) {echo "class='active'";} ?> >
+                                <a href="?page=proposalku&id_proposal=<?php echo $arr_result['id'];?>"><?php echo $arr_result['nama_proposal'];?></a>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                    </li>
+                    <li <?php if ($activeStatus == "logout") {echo "class='active'";} ?>>
+                        <a href="system/logout_service.php">Logout</a>
+                    </li>
+                    <?php } ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

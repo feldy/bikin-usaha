@@ -20,12 +20,13 @@ if (isset($_POST['btn_login'])) {
 		$_SESSION['user_sid'] = $id;
 		// $obj[] = array('session' => $role, 'userId' => $id, 'email' => $email); 
 
-		echo json_encode("success");
-		
+		// echo json_encode("success");
+		echo "<script> alert('Selamat datang kembali, temukan berbagai proposal usaha yang menarik! '); window.history.go(-2);</script>";
 		// echo $_SESSION['email']." = ".$_SESSION['password'];
 	} else {
 		// $obj = array();
-		echo json_encode("failed");
+		// echo json_encode("failed");
+		echo "<script> alert('Email atau password anda belum terdaftar, silahkan ulangi kembali! '); window.history.back();</script>";
 	}
 }
 

@@ -63,6 +63,11 @@
             while($arr_result=mysql_fetch_array($result)){
                 $id_proposal = $arr_result['id_proposal'];
                 $photo = $arr_result['gambar1'];
+                $line = $arr_result['informasi'];
+                if (preg_match('/^.{1,360}\b/s',  $arr_result['informasi'], $match))
+                {
+                    $line=$match[0];
+                }
         ?>
             <div class="col-md-4 img-portfolio">
                 <a href="?page=join_usaha&id_proposal=<?php echo $id_proposal; ?>">
@@ -72,7 +77,7 @@
                     <a href="?page=join_usaha&id_proposal=<?php echo $id_proposal; ?>"><?php echo $arr_result['nama']; ?></a>
                 </h3>
                 <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $arr_result['kota']; ?></h6>
-                <p><?php echo $arr_result['informasi']; ?></p>
+                <p><?php echo $line.". . ."; ?></p>
             </div>
         <!-- <div class="col-md-4">
             <div class="panel panel-default">
@@ -108,6 +113,12 @@
             $result = mysql_query("SELECT * FROM m_jenis_usaha o where o.is_active = 1  LIMIT 0, 5 ") or die(mysql_error());
             $count = 0;
             while($arr_result=mysql_fetch_array($result)){
+
+            $line = $arr_result['deskripsi'];
+            if (preg_match('/^.{1,560}\b/s',  $arr_result['deskripsi'], $match))
+            {
+                $line=$match[0];
+            }
         ?>
             <!-- <div class="row"> -->
                 <div class="col-md-6 img-portfolio">
@@ -186,32 +197,6 @@
                                     echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic4.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
                                 }
 
-
-                                // if ($pic1 != NULL && $pic1 != "") {
-                                //     $active = 1;
-                                //     echo '<div class="item active"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic1.'" alt=""></div>';
-                                // }
-
-                                // if ($pic2 != NULL && $pic2 != "") {
-                                //     if ($active = 0) {
-                                //         $sActive = 'active';
-                                //     }
-                                //     echo '<div class="item $sActive"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic2.'" alt=""></div>';
-                                // }
-
-                                // if ($pic3 != NULL && $pic3 != "") {
-                                //     if ($active = 0) {
-                                //         $sActive = 'active';
-                                //     }
-                                //     echo '<div class="item $sActive"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic3.'" alt=""></div>';
-                                // }
-
-                                // if ($pic4 != NULL && $pic4 != "") {
-                                //     if ($active = 0) {
-                                //         $sActive = 'active';
-                                //     }
-                                //     echo '<div class="item $sActive"><img style="height: 100%; overflow: hidden;" onerror="this.src=\'upload/images/Default.jpg\'" class="img-responsive" src="upload/images/'.$pic4.'" alt=""></div>';
-                                // }
                             ?>
                         </div>
 
@@ -232,22 +217,8 @@
                         <li>Membutuhkan <strong><?php echo number_format($arr_result['max_jumlah_pegawai'], 0); ?> Orang</strong> Pegawai</li>
                         <li>Kategori <strong><?php echo $arr_result['kategori_jenis']; ?></strong></li>
                     </ul>
-                    <p><?php echo $arr_result['deskripsi']; ?></p>
+                    <p><?php echo $line.". . ."; ?></p>
                 </div>
-
-            <!-- </div> -->
-           <!--  <div class="col-md-6">
-                <h2><?php echo $arr_result['nama']; ?></h2>
-                <ul>
-                    <li>Modal <strong>Rp. <?php echo number_format($arr_result['modal'], 0); ?></strong>
-                    </li>
-                    <li>Membutuhkan <strong><?php echo number_format($arr_result['max_jumlah_pegawai'], 0); ?> Orang</strong> Pegawai</li>
-                    <li>Kategori <strong><?php echo $arr_result['kategori_jenis']; ?></strong></li>
-                </ul>
-                <p><?php echo $arr_result['deskripsi']; ?></p>
-            </div>
-            
-        <hr /> -->
         <?php 
                 $count++;
             } 

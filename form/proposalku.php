@@ -1,18 +1,147 @@
+<?php 
+// session_start();
+include 'system/config_service.php';
+
+if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
+    echo "<script>location='?page=login'</script>";
+} else {
+?>
 <div id="wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Proposalku</h1>
+            <h1 class="page-header">Dashboard Proposal </h1>
         </div>
     </div>
+    <?php
+    $id_proposal = $_GET['id_proposal'];
+    $result = mysql_query("SELECT   o.nilai_persentase_investor as nilai_persentase_investor, 
+                                    o.alamat as alamat, 
+                                    o.kota as kota, 
+                                    o.tanggal as tanggal, 
+                                    o.informasi_proposal as informasi_proposal, 
+                                    o.nama_proposal as nama_proposal, 
+                                    o.gaji_pegawai as gaji_pegawai, 
+                                    e.id as id_owner, 
+                                    e.nama as nama_owner, 
+                                    e.file_photo as file_photo_owner, 
+                                    e.alamat as alamat_owner, 
+                                    e.no_telepon as no_telepon_owner, 
+                                    e.ttl as ttl_owner, 
+                                    e.email as email_owner, 
+                                    e.tanggal as tanggal_aktif, 
+                                    u.nama as nama_supplier,  
+                                    u.deskripsi as u_deskripsi,  
+                                    u.modal as modal, 
+                                    u.contact_supplier as contact_supplier, 
+                                    u.pic_1 as pic_1, 
+                                    u.pic_2 as pic_2, 
+                                    u.pic_3 as pic_3, 
+                                    u.pic_4 as pic_4 
+                        FROM        t_proposal_usaha o 
+                        INNER JOIN  m_entrepreneur e ON o.id_owner = e.id 
+                        INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id 
+                        WHERE       o.id = '$id_proposal'
+                        GROUP BY    o.id
+                        ") or die(mysql_error());
+    $map = mysql_fetch_array($result);
+
+    $ttl_pecah = split(",", $map['ttl_owner']);
+    $kotaLahir = $ttl_pecah[0];
+    $tglLahir = $ttl_pecah[1];
+    $tglLahirPecah = split("/", $tglLahir);
+    $tglLahirFinal = $tglLahirPecah[2]."-".$tglLahirPecah[1]."-".$tglLahirPecah[0];
+?>
     <div class="row">
         <div class="col-md-6">
-            <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <?php
+                        $active = 0;
+                        $sActive = "";
+                        $pic1 = $map['pic_1'];   
+                        $pic2 = $map['pic_2'];   
+                        $pic3 = $map['pic_3'];   
+                        $pic4 = $map['pic_4'];   
+
+                        if ($pic1 != NULL && $pic1 != "") {
+                            $active = 1;
+                            echo '<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>';
+                        }
+
+                        if ($pic2 != NULL && $pic2 != "") {
+                            if ($active = 0) {
+                                $sActive = 'class="active"';
+                            }
+                            echo '<li data-target="#carousel-example-generic" data-slide-to="1" $sActive ></li>';
+                        }
+
+                        if ($pic3 != NULL && $pic3 != "") {
+                            if ($active = 0) {
+                                $sActive = 'class="active"';
+                            }
+                            echo '<li data-target="#carousel-example-generic" data-slide-to="2" $sActive ></li>';
+                        }
+
+                        if ($pic4 != NULL && $pic4 != "") {
+                            if ($active = 0) {
+                                $sActive = 'class="active"';
+                            }
+                            echo '<li data-target="#carousel-example-generic" data-slide-to="3" $sActive ></li>';
+                        }
+                    ?>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                     <?php
+                        $active = 0;
+                        $sActive = "";
+                        $pic1 = $map['pic_1'];   
+                        $pic2 = $map['pic_2'];   
+                        $pic3 = $map['pic_3'];   
+                        $pic4 = $map['pic_4'];   
+
+                        if ($pic1 != NULL && $pic1 != "") {
+                            $active = 1;
+                            echo '<div class="item active"><div style="background:url(upload/images/'.$pic1.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                        }
+
+                        if ($pic2 != NULL && $pic2 != "") {
+                            if ($active = 0) {
+                                $sActive = 'active';
+                            }
+                            echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic2.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                        }
+
+                        if ($pic3 != NULL && $pic3 != "") {
+                            if ($active = 0) {
+                                $sActive = 'active';
+                            }
+                            echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic3.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                        }
+
+                        if ($pic4 != NULL && $pic4 != "") {
+                            if ($active = 0) {
+                                $sActive = 'active';
+                            }
+                            echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic4.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
+                        }
+                    ?>
+                </div>
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
         </div>
         <div class="col-md-6">
-            <h2>Deskripsi Usaha</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed voluptate nihil eum consectetur similique? Consectetur, quod, incidunt, harum nisi dolores delectus reprehenderit voluptatem perferendis dicta dolorem non blanditiis ex fugiat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, magni, aperiam vitae illum voluptatum aut sequi impedit non velit ab ea pariatur sint quidem corporis eveniet. Odit, temporibus reprehenderit dolorum!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, consequuntur, modi mollitia corporis ipsa voluptate corrupti eum ratione ex ea praesentium quibusdam? Aut, in eum facere corrupti necessitatibus perspiciatis quis?</p>
+            <h2><?php echo strtoupper($map['nama_proposal']);?></h2>
+            <p><?php echo $map['informasi_proposal']?></p>
         </div>
     </div>
     <div class="row">
@@ -175,13 +304,55 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-user fa-fw"></i> Informasi Owner
+                            <i class="fa fa-info-circle fa-fw"></i> Informasi Usaha
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="col-md-12">
-                                <img class="img-responsive" src="http://placehold.it/140x100" alt=""><br />
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed voluptate nihil eum consectetur similique? Consectetur, quod, incidunt, harum nisi dolores delectus reprehenderit voluptatem perferendis dicta dolorem non blanditiis ex fugiat.</p>
+                                <ul>
+                                    <li>Modal :Rp. <strong><?php echo number_format($map['modal']); ?></strong> </li>
+                                    <li>Supplier: <?php echo $map['nama_supplier']; ?></li>
+                                    <li>Kontak: <?php echo $map['contact_supplier']; ?></li>
+                                    <li>Lokasi : <?php echo $map['kota']; ?></li>
+                                </ul>
+                                <p>Alamat: <?php echo $map['alamat']?></p>
+                                <span class="pull-right text-muted small"><i class="glyphicon glyphicon-time"></i> <em><?php getTanggal($map['tanggal']); ?></em>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-user fa-fw"></i> Informasi Owner
+                        </div>
+                        <!-- /.panel-heading -->
+                        <?php
+                            $ownerID = $map['id_owner'];
+                            $sql = mysql_query("SELECT * FROM t_proposal_usaha o where o.id_owner = '$ownerID' ") or die(mysql_error());
+                            $sql2 = mysql_query("SELECT * FROM t_anggota_proposal_usaha o where o.id_entrepreneur = '$ownerID' and o.status = 'APPROVED' ") or die(mysql_error());
+                            $numArr = mysql_num_rows($sql);
+                            $numArr2 = mysql_num_rows($sql2);
+                        ?>
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <img class="img-responsive" src="upload/photo_profile/<?php echo $map['file_photo_owner']?>" alt=""><br />
+                                <p class="pull-right text-muted">
+                                    <em>
+                                    <strong><?php echo $map['nama_owner']; ?></strong> adalah seorang Entrepreneur yang beralamat di 
+                                    <strong><?php echo $map['alamat_owner']; ?> </strong>lahir di 
+                                    <strong><?php echo $kotaLahir;?></strong> pada 
+                                    <strong><?php echo getTanggal($tglLahirFinal); ?></strong>. Aktif di Bikin-Usaha.com mulai dari 
+                                    <strong><?php echo getTanggal($map['tanggal_aktif']);?></strong>. Telah membuat 
+                                    <strong><?php echo $numArr;?> Proposal Usaha</strong> dan menjadi anggota dari proposal Entrepreneur lain sebanyak  
+                                    <strong><?php echo $numArr2;?> Proposal Usaha</strong>. Jika anda ingin bertanya silahkan hubungi saya ke:
+                                    <ul>
+                                        <li><i class="glyphicon glyphicon-phone-alt"></i> <?php echo $map['no_telepon_owner']; ?></li>
+                                        <li><i class="fa fa-google-plus-square"></i> <?php echo $map['email_owner']; ?></li>
+                                    </ul>
+                                    </em>
+                                </p>
                             </div>
                         </div>
                         <div class="panel-body" >
@@ -360,3 +531,4 @@
         </div>
     </div>
 </div>
+<?php } ?>

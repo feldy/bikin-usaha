@@ -1,6 +1,6 @@
 <?php 
 
-session_start();
+// session_start();
 if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
     echo "<script>location='?page=login'</script>";
     // echo "string";
