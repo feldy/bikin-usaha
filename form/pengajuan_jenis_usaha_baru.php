@@ -33,6 +33,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                             <div class="controls">
                                 <select name="jenis_usaha" class="form-control">
                                     <option value="Franchise Makanan">Franchise Makanan</option>
+                                    <option value="Franchise Minuman">Franchise Minuman</option>
                                 </select>
                             </div>
                         </div>
