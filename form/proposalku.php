@@ -15,6 +15,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
     <?php
     $id_proposal = $_GET['id_proposal'];
     $result = mysql_query("SELECT   o.nilai_persentase_investor as nilai_persentase_investor, 
+                                    o.id as proposal_id, 
                                     o.alamat as alamat, 
                                     o.kota as kota, 
                                     o.tanggal as tanggal, 
@@ -36,7 +37,8 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                     u.pic_1 as pic_1, 
                                     u.pic_2 as pic_2, 
                                     u.pic_3 as pic_3, 
-                                    u.pic_4 as pic_4 
+                                    u.pic_4 as pic_4 ,
+                                    u.doc as doc
                         FROM        t_proposal_usaha o 
                         INNER JOIN  m_entrepreneur e ON o.id_owner = e.id 
                         INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id 
@@ -52,7 +54,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
     $tglLahirFinal = $tglLahirPecah[2]."-".$tglLahirPecah[1]."-".$tglLahirPecah[0];
 ?>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -139,167 +141,131 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                 </a>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h2><?php echo strtoupper($map['nama_proposal']);?></h2>
             <p><?php echo $map['informasi_proposal']?></p>
         </div>
     </div>
-    <div class="row">
-        &nbsp;
-    </div>
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-8">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-history fa-fw"></i> History
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <ul class="timeline">
-                            <li>
-                                <div class="timeline-badge"><i class="fa fa-check"></i>
-                                </div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        <p><small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via Twitter</small>
-                                        </p>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-inverted">
-                                <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
-                                </div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-                                </div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-inverted">
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-                <div class="col-lg-12">
-                    <h2 class="page-header">
-                        <i class="fa fa-group"></i>
-                        Anggota</h2>
-                </div>
-                <div class="col-md-4">
-                    <div class="media">
-                        <div class="pull-left">
-                            <span class="fa-stack fa-2x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                            </span> 
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Feldy</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-history fa-fw"></i> History
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <ul class="timeline">
+                                    <li>
+                                        <div class="timeline-badge"><i class="fa fa-check"></i>
+                                        </div>
+                                        <div class="timeline-panel">
+                                            <div class="timeline-heading">
+                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
+                                                <p><small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via Twitter</small>
+                                                </p>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-inverted">
+                                        <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <div class="timeline-panel">
+                                            <div class="timeline-heading">
+                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
+                                        </div>
+                                        <div class="timeline-panel">
+                                            <div class="timeline-heading">
+                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-inverted">
+                                        <div class="timeline-panel">
+                                            <div class="timeline-heading">
+                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.panel-body -->
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="media">
-                        <div class="pull-left">
-                            <span class="fa-stack fa-2x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                            </span> 
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Feldy</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="media">
-                        <div class="pull-left">
-                            <span class="fa-stack fa-2x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                            </span> 
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Feldy</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="media">
-                        <div class="pull-left">
-                            <span class="fa-stack fa-2x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                            </span> 
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Feldy</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="media">
-                        <div class="pull-left">
-                            <span class="fa-stack fa-2x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                            </span> 
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Feldy</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
+                    <div class="col-lg-12">
+                        <h2 class="page-header"><i class="fa fa-group"></i>Anggota</h2>
+                        <div class="row">
+                            <?php
+                                $strQryAnggota = "  SELECT  e.nama as nama_entrepreneur,
+                                                            e.file_photo as photo_entrepreneur,
+                                                            t.tipe_anggota as tipe_anggota
+                                                    FROM t_anggota_proposal_usaha t 
+                                                    INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
+                                                    WHERE id_proposal_usaha = '$id_proposal' 
+                                                    AND status = 'APPROVED' 
+                                                    GROUP BY t.id_entrepreneur
+                                                    ";
+                                $qryAnggota = mysql_query($strQryAnggota) or die (mysql_error());
+                                while ($arrQryAnggota = mysql_fetch_array($qryAnggota)) {
+                            ?>
+                            <div class="col-md-4">
+                                <div class="media">
+                                    <div class="pull-left">
+                                        <span class="fa-stack fa-2x">
+                                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                            <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                                              <!-- <img src="upload/photo_profile/<?php echo $arrQryAnggota['photo_entrepreneur'];?>" alt="User Avatar" class="img-responsive img-circle" /> -->
+                                        </span>  
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading"><?php echo $arrQryAnggota['nama_entrepreneur'];?></h4>
+                                        <?php 
+                                            $strQryAnggota2 = "  SELECT  count(*)
+                                                                FROM t_anggota_proposal_usaha t 
+                                                                INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
+                                                                WHERE id_proposal_usaha = '$id_proposal' 
+                                                                AND status = 'APPROVED' 
+                                                                ";
+                                            $qryAnggota2 = mysql_query($strQryAnggota2) or die (mysql_error());
+                                            $arrQryAnggota2 = mysql_num_rows($qryAnggota2);
+                                            $ketAnggota = $arrQryAnggota['tipe_anggota'];
+                                            if ($arrQryAnggota2 > 1) {
+                                                $ketAnggota = "Investor dan Pegawai";
+                                            }
+                                        ?>
+                                        <p>Join sebagai. <?php echo strtoupper($ketAnggota);?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="media">
-                        <div class="pull-left">
-                            <span class="fa-stack fa-2x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                            </span> 
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Feldy</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                        </div>
+                    <div class="col-lg-12">
+                        &nbsp;
                     </div>
                 </div>
             </div>
+            
             <div class="col-lg-4">
                 <div class="row">
                     <div class="panel panel-default">
@@ -330,11 +296,16 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                         <!-- /.panel-heading -->
                         <?php
                             $ownerID = $map['id_owner'];
+                            $proposal_id = $map['proposal_id'];
+                            $doc = $map['doc'];
                             $sql = mysql_query("SELECT * FROM t_proposal_usaha o where o.id_owner = '$ownerID' ") or die(mysql_error());
                             $sql2 = mysql_query("SELECT * FROM t_anggota_proposal_usaha o where o.id_entrepreneur = '$ownerID' and o.status = 'APPROVED' ") or die(mysql_error());
                             $numArr = mysql_num_rows($sql);
                             $numArr2 = mysql_num_rows($sql2);
                         ?>
+                        <input id="id_owner" type="hidden" value="<?php echo $ownerID;?>">
+                        <input id="proposal_id" type="hidden" value="<?php echo $proposal_id;?>">
+                        <input id="doc_id" type="hidden" value="<?php echo $doc;?>">
                         <div class="panel-body">
                             <div class="col-md-12">
                                 <img class="img-responsive" src="upload/photo_profile/<?php echo $map['file_photo_owner']?>" alt=""><br />
@@ -356,14 +327,14 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                             </div>
                         </div>
                         <div class="panel-body" >
-                            <a class="btn btn-default btn-block btn-social">
+                            <a class="btn btn-default btn-block btn-social" data-toggle="modal" data-target="#myModalProposalkuAjukanKaryawan">
                                 <i class="fa fa-child"></i> Ajukan Karyawan
                             </a>
-                            <a class="btn btn-default btn-block">
+                            <a class="btn btn-default btn-block" data-toggle="modal" data-target="#myModalProposalkuAjukanInvestor">
                                 <i class="fa fa-envelope-o fa-fw"></i> Undang Investor
                             </a>
-                            <a class="btn btn-default btn-block">
-                                <i class="fa fa-print fa-fw"></i> Print Draft Proposalku
+                            <a class="btn btn-default btn-block" id="download_draft_proposalku">
+                                <i class="fa fa-print fa-fw"></i> Download Draft Proposalku
                             </a>
                         </div>
                     </div>
@@ -376,23 +347,26 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
+                                <?php 
+                                    $strQuery = "   SELECT  s.title as title,  
+                                                            s.deskripsi as deskripsi,  
+                                                            s.tanggal as tanggal,  
+                                                            e.nama as nama 
+                                                    FROM m_schedule s 
+                                                    INNER JOIN m_entrepreneur e ON s.id_entreprener = e.id
+                                                    WHERE id_proposal = '$proposal_id' 
+                                                    ORDER BY s.tanggal desc";
+                                    $qrySchedule = mysql_query($strQuery) or die(mysql_error());
+                                    while ($arrQrySchedule=mysql_fetch_array($qrySchedule)) {
+                                ?>
                                 <a  class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> Pertemuan 1 (Kampus)
-                                    <span class="pull-right text-muted small"><em>15 Juni 2015</em>
+                                    <i class="fa fa-comment fa-fw"></i> <?php echo $arrQrySchedule['title']." (".$arrQrySchedule['deskripsi'].") ";?>
+                                    <span class="pull-right text-muted small"><em><?php echo getTanggal($arrQrySchedule['tanggal'])." (".$arrQrySchedule['nama'].") "; ?></em>
                                     </span>
                                 </a>
-                                <a class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> Pembahasan Modal & Karyawan
-                                    <span class="pull-right text-muted small"><em>20 Juni 2015</em>
-                                    </span>
-                                </a>
-                                <a class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> Kesepakatan (Mall Depok)
-                                    <span class="pull-right text-muted small"><em>30 Juni 2015</em>
-                                    </span>
-                                </a>
+                                <?php } ?>
                             </div>
-                            <a href="#" class="btn btn-default btn-block">Lihat Semua Schedule</a>
+                            <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#myModalProposalkuAddSchedule">Add Schedule</a>
                         </div>
                     </div>
                 </div>
@@ -412,34 +386,32 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php 
+                                        $strQuery = "   SELECT  
+                                                        -- s.title as title,  
+                                                        t.status as status,  
+                                                        t.tipe_anggota as tipe_anggota,  
+                                                        e.nama as nama 
+                                                FROM t_anggota_proposal_usaha t 
+                                                INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
+                                                WHERE id_proposal_usaha = '$proposal_id' 
+                                                ORDER BY t.tanggal desc";
+                                        $qryPermintaan = mysql_query($strQuery) or die(mysql_error());
+                                        $count = 0;
+                                        while ($arrQryPermintaan=mysql_fetch_array($qryPermintaan)) {
+                                            $count++;
+                                        ?>
                                         <tr>
-                                            <td>1</td>
-                                            <td>Karyawan 1</td>
+                                            <td><?php echo $count;?></td>
+                                            <td><?php echo $arrQryPermintaan['nama']." (".strtoupper($arrQryPermintaan['tipe_anggota']).")";?>
+                                                <span class="pull-right text-muted small"><em><?php echo strtoupper($arrQryPermintaan['status']);?></em>
+                                                </span>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Karyawan 2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Investor 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Investor 2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Investor 3</td>
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>Permintaan Perrtemuan Oleh A</td>
-                                        </tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="#" class="btn btn-default btn-block">Lihat Semua Pengajuan</a>
                         </div>
                     </div>
                 </div>
@@ -530,5 +502,188 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="myModalProposalkuAddSchedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAddSchedule" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelAddSchedule">Tambah Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" action="system/create_undangan_service.php" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="control-group form-group">
+                                <div class="controls">
+                                    <label>Tanggal Schedule :</label>
+                                    <input type="text" name="tanggalSchedule" id="tanggalSchedule" class="form-control"  
+                                    required 
+                                    data-validation-required-message=""
+                                    data-validation-email-message="" />
+                                </div>
+                            </div>
+                            <div class="control-group form-group">
+                                <div class="controls">
+                                    <label>Nama Schedule :</label>
+                                    <input type="text" name="namaSchedule" class="form-control"  
+                                    required 
+                                    data-validation-required-message=""
+                                    data-validation-email-message="" />
+                                </div>
+                            </div>
+                            <div class="control-group form-group">
+                                <div class="controls">
+                                    <label>Deskripsi :</label>
+                                    <input type="text" name="deskripsiSchedule" class="form-control"  
+                                    required 
+                                    data-validation-required-message=""
+                                    data-validation-email-message="" />
+                                </div>
+                            </div>
+                            <input name="proposal_id" type="hidden" value="<?php echo $proposal_id;?>">
+                        </div>  
+                    </div>                            
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" name="btn_simpan_add_schedule" class="btn btn-primary">Kirim</button>
+                </form>    
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<div class="modal fade" id="myModalProposalkuAjukanInvestor" tabindex="-1" role="dialog" aria-labelledby="myModalLabelInvestor" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelInvestor">Undang Invenstor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label>Masukan email entrepreneur yang ingin kamu Undang :</label>
+                                <input type="email" id="emailEntrepreneurProposalkuInvestor" class="form-control"  
+                                required 
+                                data-validation-required-message="Masukan email kamu donk !"
+                                data-validation-email-message="Email tidak valid !" />
+                                <br/ >
+                                <div id="msgEmailProposalkuInvestor"></div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <div class="row" id="rowAddKaryawanProposalkuInvestor"></div>                              
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" id="add_undangan_investor_proposalku" class="btn btn-default" >Add</button>
+                <button type="button" id="kirim_undangan_investor_proposalku" class="btn btn-primary">Kirim</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalProposalkuAjukanKaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Ajukan Karyawan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul id="myTab" class="nav nav-tabs nav-justified">
+                            <li class="active"><a href="#haveUser" data-toggle="tab"><i class="fa fa-navicon"></i> Sudah Punya User</a>
+                            </li>
+                            <li class=""><a href="#havetUser" data-toggle="tab"><i class="fa fa-navicon"></i> Belum Punya User</a>
+                            </li>
+                        </ul>
+
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade active in" id="haveUser">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="control-group form-group">
+                                            <div class="controls">
+                                                <label>Masukan email yang ingin kamu Ajukan :</label>
+                                                <input type="email" id="emailEntrepreneurProposalku" class="form-control"  
+                                                required 
+                                                data-validation-required-message="Masukan email kamu donk !"
+                                                data-validation-email-message="Email tidak valid !">
+                                                <br/ >
+                                                <div id="msgEmailProposalku"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>      
+                                <div class="row" id="rowAddKaryawanProposalku"></div>                              
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                <button type="button" id="add_undangan_karyawan_proposalku" class="btn btn-default" >Add</button>
+                                <button type="button" id="kirim_undangan_karyawan_proposalku" class="btn btn-primary">Kirim</button>
+                            </div>
+                            <div class="tab-pane fade" id="havetUser">
+                                <form role="form" id="formPegawaiNotUser" action="system/undang_pegawai_not_user_service.php" method="post" enctype="multipart/form-data">
+                                    <div class="control-group form-group">
+                                        <div class="control-group form-group">
+                                        <div class="controls">
+                                            <label>Nama Lengkap :</label>
+                                            <input name="nama" type="text" class="form-control"  required data-validation-required-message="Masukan nama lengkap kamu donk !">
+                                            <p class="help-block"></p>
+                                        </div>
+                                    </div>
+                                    <div class="control-group form-group">
+                                        <label>Jenis Kelamin :</label>
+                                        <div class="controls">
+                                            <select name="jk" class="form-control">
+                                                <option value="Laki-Laki">Laki-Laki</option>
+                                                <option value="Perempuan">Perempuan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group form-group">
+                                        <div class="controls">
+                                            <label>Nomor Telepon :</label>
+                                            <input name="tlp" type="text" class="form-control" />
+                                            <p class="help-block"></p>
+                                        </div>
+                                    </div>
+                                    <div class="control-group form-group">
+                                        <div class="controls">
+                                            <label>Alamat :</label>
+                                            <textarea name="alamat" rows="5" class="form-control" ></textarea>
+                                            <p class="help-block"></p>
+                                        </div>
+                                    </div> 
+                                    <div class="control-group form-group">
+                                        <div class="controls">
+                                            <label>Photo :</label>
+                                            <input name="file2" type="file" />
+                                            <p class="help-block"></p>
+                                        </div>
+                                    </div>
+                                    <div class="control-group form-group">
+                                        <div class="controls">
+                                            <label>CV :</label>
+                                            <input name="file" type="file" />
+                                            <p class="help-block"></p>
+                                        </div>
+                                    </div>
+                                    <div id="success"></div>
+                                    <!-- For success/fail messages -->
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                    <button name="btn_simpan_not_user" type="submit" class="btn btn-primary">Ajukan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+    <!-- /.modal-dialog -->
 </div>
 <?php } ?>
