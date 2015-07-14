@@ -416,80 +416,113 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                     </div>
                 </div>
                 <div class="row">
+                    <script type="text/javascript">
+                        setInterval(function() {
+                            console.log('loaddd');
+                            $.ajax({
+                                url: "system/service_impl.php",
+                                type: "POST",
+                                data: {
+                                    type: "load_chat",
+                                    proposal_id: $('#proposal_id').val()
+                                },
+                                cache: false,
+                                dataType : "json",
+                                success: function(e) {
+                                    var position = "left";
+                                    var count = 0;
+                                    var content = "";
+                                    for (var i = 0; i < e.length; i++) {
+                                        count++;
+                                        if (count % 2 == 0) {
+                                            //genap
+                                            position = "left";
+                                        } else {
+                                            position = "right";
+                                        }
+
+                                        content += "<li tabindex='1' class='"+position+" clearfix'>"+
+                                                        "<span class='chat-img pull-"+position+"'>"+
+                                                            "<img width='50' src='upload/photo_profile/"+e[i].file_photo+"' alt='User Avatar' class='img-circle' />"+
+                                                        "</span>"+
+                                                        "<div class='chat-body clearfix'>"+
+                                                            "<div class='header'>"+
+                                                                "<strong class='primary-font'>"+e[i].nama_entrepreneur+"</strong>"+
+                                                                "<small class='pull-right text-muted'>"+
+                                                                    // "<i class='fa fa-clock-o fa-fw'></i> <span data-livestamp='"+e[i].tanggal+"'></span>"+
+                                                                "</small>"+
+                                                            "</div>"+
+                                                            "<p>"+e[i].message+"</p>"+
+                                                        "</div>"+
+                                                    "</li>"; 
+                                        
+                                    }
+                                    $('#content_chat_proposalku').html("");
+                                    $('#content_chat_proposalku').html(content);
+
+                                    var u =  $('li.clearfix').last()[0];
+                                    // u.scrollIntoViewIfNeeded();
+                                },
+                                error: function(e) {
+                                    // Fail message
+                                    console.log('N: ', e);
+                                }
+                            });
+                        }, 3000);
+                    </script>
                     <div class="chat-panel panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-comments fa-fw"></i>
                             Chat
                         </div>
                         <div class="panel-body">
-                            <ul class="chat">
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+                            <ul class="chat" id="content_chat_proposalku">
+                                <?php 
+                                    $strQuery = "   SELECT  e.nama as nama_entrepreneur,
+                                                            e.file_photo as file_photo,
+                                                            t.message as message,
+                                                            t.tanggal as tanggal
+
+                                            FROM m_chat t 
+                                            INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
+                                            WHERE id_proposal = '$proposal_id' 
+                                            ORDER BY t.tanggal asc";
+                                    $qryChat = mysql_query($strQuery) or die(mysql_error());
+                                    $count = 0;
+                                    $position = "left";
+                                    while ($arrQryChat=mysql_fetch_array($qryChat)) {
+                                        $count++;
+                                        if ($count % 2 == 0) {
+                                            //genap
+                                            $position = "left";
+                                        } else {
+                                            //ganjil
+                                            $position = "right";
+                                        }
+                                ?>
+                                <li class="<?php echo $position; ?> clearfix">
+                                    <span class="chat-img pull-<?php echo $position; ?>">
+                                        <img width="50" src="upload/photo_profile/<?php echo $arrQryChat['file_photo'];?>" alt="User Avatar" class="img-circle" />
                                     </span>
                                     <div class="chat-body clearfix">
                                         <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
+                                            <strong class="primary-font"><?php echo $arrQryChat['nama_entrepreneur']; ?></strong>
                                             <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 12 mins ago
+                                                <!-- <i class="fa fa-clock-o fa-fw"></i> <span data-livestamp="<?php echo $arrQryChat['tanggal']; ?>"></span> -->
                                             </small>
                                         </div>
                                         <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+                                            <?php echo $arrQryChat['message']; ?>
                                         </p>
                                     </div>
                                 </li>
-                                <li class="right clearfix">
-                                    <span class="chat-img pull-right">
-                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 13 mins ago</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
-                                            <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 14 mins ago</small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix">
-                                    <span class="chat-img pull-right">
-                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 15 mins ago</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
+                                <?php } ?>
                             </ul>
                         </div>
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Ketik Pesan disini..." />
+                                <input id="input-chat" type="text" class="form-control input-sm" placeholder="Ketik Pesan disini..." />
                                 <span class="input-group-btn">
                                     <button class="btn btn-warning btn-sm" id="btn-chat">
                                         Send
@@ -511,7 +544,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                 <h4 class="modal-title" id="myModalLabelAddSchedule">Tambah Schedule</h4>
             </div>
             <div class="modal-body">
-                <form role="form" action="system/create_undangan_service.php" method="post" enctype="multipart/form-data">
+                <form role="form" id="formAddSchedule" action="system/create_undangan_service.php" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="control-group form-group">
