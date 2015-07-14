@@ -143,6 +143,10 @@ $(function() {
 	    $('#msgEmailProposalkuInvestor').attr('class', "");
 	    $("#emailEntrepreneurProposalkuInvestor").val("");
 	});
+	$('#myModalProposalkuAddSchedule').on('shown.bs.modal', function() {
+	    // $("#formAddSchedule").reset();
+	    document.getElementById("formAddSchedule").reset();
+	});
 	$("#kirim_undangan").click(function() {
 	  	$.ajax({
 	        url: "system/service_impl.php",
@@ -402,6 +406,67 @@ $(function() {
 		// console.log($("#doc_id").val());
 	    e.preventDefault();  //stop the browser from following
 	    window.location.href = 'upload/document/'+$("#doc_id").val();
+	});
+	$("#input-chat").keypress(function(event) {
+		if (event.which == 13 ) {
+		    $('#btn-chat').click()
+		 }
+	});
+	$("#btn-chat").click(function() {
+	  	$.ajax({
+	        url: "system/service_impl.php",
+	        type: "POST",
+	        data: {
+	            type: "chat",
+	            message: $('#input-chat').val(),
+	            proposal_id: $('#proposal_id').val()
+	        },
+	        cache: false,
+	        dataType : "json",
+	        success: function(e) {
+	            // Successed message
+	            // console.log('Y: ', e);
+	            $('#input-chat').val('');
+	            $('#input-chat').focus();
+	            var position = "left";
+	            var count = 0;
+	            var content = "";
+	            for (var i = 0; i < e.length; i++) {
+					count++;
+					if (count % 2 == 0) {
+						//genap
+						position = "left";
+					} else {
+						position = "right";
+					}
+
+					content += "<li tabindex='1' class='"+position+" clearfix'>"+
+								    "<span class='chat-img pull-"+position+"'>"+
+								        "<img width='50' src='upload/photo_profile/"+e[i].file_photo+"' alt='User Avatar' class='img-circle' />"+
+								    "</span>"+
+								    "<div class='chat-body clearfix'>"+
+								        "<div class='header'>"+
+								            "<strong class='primary-font'>"+e[i].nama_entrepreneur+"</strong>"+
+								            "<small class='pull-right text-muted'>"+
+								                // "<i class='fa fa-clock-o fa-fw'></i> <span data-livestamp='"+e[i].tanggal+"'></span>"+
+								            "</small>"+
+								        "</div>"+
+								        "<p>"+e[i].message+"</p>"+
+								    "</div>"+
+								"</li>"; 
+					
+	            }
+				$('#content_chat_proposalku').html("");
+				$('#content_chat_proposalku').html(content);
+
+				var u =  $('li.clearfix').last()[0];
+				u.scrollIntoViewIfNeeded();
+	        },
+	        error: function(e) {
+	            // Fail message
+	            console.log('N: ', e);
+	        }
+	    });
 	});
 });
 
