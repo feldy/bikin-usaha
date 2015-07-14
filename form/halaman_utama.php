@@ -79,22 +79,6 @@
                 <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $arr_result['kota']; ?></h6>
                 <p><?php echo $line.". . ."; ?></p>
             </div>
-        <!-- <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-coffee"></i> <?php echo $arr_result['nama']; ?></h4>
-                </div>
-                <div class="panel-body">
-                    <img class="img-responsive" src="upload/images/<?php echo $photo; ?>" alt="">
-                    <br />
-                    <p><?php echo $arr_result['informasi']; ?></p>
-
-                    <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $arr_result['kota']; ?></h6>
-
-                    <a href="#" class="btn btn-default">Join Usaha</a>
-                </div>
-            </div>
-        </div> -->
         <?php } ?>
     </div>
     <!-- /.row -->
@@ -110,7 +94,7 @@
     
     <div class="row">
         <?php 
-            $result = mysql_query("SELECT * FROM m_jenis_usaha o where o.is_active = 1  LIMIT 0, 5 ") or die(mysql_error());
+            $result = mysql_query("SELECT * FROM m_jenis_usaha o where o.is_active = 1 order by tanggal desc  LIMIT 0, 5 ") or die(mysql_error());
             $count = 0;
             while($arr_result=mysql_fetch_array($result)){
 
@@ -196,7 +180,6 @@
                                     }
                                     echo '<div class="item $sActive"><div style="background:url(upload/images/'.$pic4.') center center, url(upload/images/Default.jpg) center center; background-size:cover;" class="slider-size"></div></div>';
                                 }
-
                             ?>
                         </div>
 
