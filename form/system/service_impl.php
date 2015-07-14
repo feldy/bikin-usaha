@@ -1,6 +1,7 @@
 <?php
 	include 'config_service.php';
 	include 'gen_uuid_service.php';
+	session_start();
 
 	if (isset($_POST['type'])) {
 		$type = $_POST['type'];
@@ -112,6 +113,46 @@
 				}			
 			}
 			echo $status;
+		} elseif ($type == "chat") {
+			$id = gen_uuid();
+			$message = $_POST['message'];
+			$proposal_id = $_POST['proposal_id'];
+			$id_entrepreneur = $_SESSION['user_sid'];
+			
+			mysql_query("INSERT INTO m_chat VALUES('$id','$id_entrepreneur','$proposal_id','$message', now())") or die(mysql_error());
+			$strQuery = "   	SELECT  e.nama as nama_entrepreneur,
+										e.file_photo as file_photo,
+									t.message as message,
+									t.tanggal as tanggal
+                            FROM m_chat t 
+                            INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
+                            WHERE id_proposal = '$proposal_id' 
+                            ORDER BY t.tanggal asc";
+            // echo $strQuery;
+            $a = array();
+            $query = mysql_query($strQuery) or die(mysql_error());
+			while ($arr=mysql_fetch_assoc($query)) {
+            	$a[] = $arr;
+            }
+			echo json_encode($a);
+		} elseif ($type == "load_chat") {
+			$proposal_id = $_POST['proposal_id'];
+			
+			$strQuery = "   	SELECT  e.nama as nama_entrepreneur,
+										e.file_photo as file_photo,
+									t.message as message,
+									t.tanggal as tanggal
+                            FROM m_chat t 
+                            INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
+                            WHERE id_proposal = '$proposal_id' 
+                            ORDER BY t.tanggal asc";
+            // echo $strQuery;
+            $a = array();
+            $query = mysql_query($strQuery) or die(mysql_error());
+			while ($arr=mysql_fetch_assoc($query)) {
+            	$a[] = $arr;
+            }
+			echo json_encode($a);
 		}
 	}
 ?>
