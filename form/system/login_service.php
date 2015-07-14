@@ -10,6 +10,7 @@ if (isset($_POST['btn_login'])) {
 	$id = $arr['id'];
 	$email = $arr['email'];
 	$password = $arr['password'];
+	$nama = $arr['nama'];
 	// $role = $arr['has_role'];
 
 	if ($emailP == $email && $pass == $password) {
@@ -18,10 +19,11 @@ if (isset($_POST['btn_login'])) {
 		$_SESSION['email'] = $email;
 		$_SESSION['password'] = $password;
 		$_SESSION['user_sid'] = $id;
+		$_SESSION['user_nama'] = $nama;
 		// $obj[] = array('session' => $role, 'userId' => $id, 'email' => $email); 
 
 		// echo json_encode("success");
-		echo "<script> alert('Selamat datang kembali, temukan berbagai proposal usaha yang menarik! '); window.history.go(-2);</script>";
+		echo "<script> alert('Selamat datang kembali, temukan berbagai proposal usaha yang menarik! '); window.location.href='../index.php';</script>";
 		// echo $_SESSION['email']." = ".$_SESSION['password'];
 	} else {
 		// $obj = array();
