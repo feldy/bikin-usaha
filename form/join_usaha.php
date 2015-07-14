@@ -1,5 +1,7 @@
 <?php
+    // session_start();
     $id_proposal = $_GET['id_proposal'];
+    $id_entrepreneur = $_SESSION['user_sid'];
     $result = mysql_query("SELECT   o.nilai_persentase_investor as nilai_persentase_investor, 
                                     o.alamat as alamat, 
                                     o.kota as kota, 
@@ -23,6 +25,25 @@
                         GROUP BY    o.id
                         ") or die(mysql_error());
     $map = mysql_fetch_array($result);
+
+    //searching apakah user sudah terdaftar dalam usaha tersebut atau tidak
+    $strMap1 = "SELECT tp.id_owner FROM t_anggota_proposal_usaha t 
+                            INNER JOIN t_proposal_usaha tp ON tp.id = t.id_proposal_usaha
+                            where t.id_proposal_usaha = '$id_proposal' 
+                            and (t.id_entrepreneur =  '$id_entrepreneur'  or tp.id_owner = '$id_entrepreneur')
+                            and t.status = 'APPROVED' ";
+
+    $qrySel1 = mysql_query($strMap1) or die(mysql_error()); 
+
+    // $mapSel1 = mysql_fetch_array($qrySel1);
+    $mapSel2 = mysql_num_rows($qrySel1);
+    // echo ">>>>>>>>>>>.".$strMap1;
+    if ($mapSel2 > 0) {
+        echo "<script>window.location.href='index.php?page=proposalku&id_proposal=".$id_proposal."'</script>";
+        // echo "YAAAAAAAAAAAAAAAAA";
+    } else {
+        // echo "TIDAKKKKKKKKKKKKKKKK";
+    }
 ?>
 <div class="row">
     <div class="col-lg-12">
