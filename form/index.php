@@ -217,7 +217,10 @@ session_start();
     <!-- //other lib -->
     <script src="lib/datepicker/js/bootstrap-datepicker.js"></script>
     <script src="lib/editor/dist/summernote.min.js"></script>
+    <script src="lib/moment.min.js"></script>
+    <script src="lib/livestamp.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/action.js"></script>
     <script src="js/action.js"></script>
 
 
