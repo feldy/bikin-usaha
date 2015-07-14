@@ -8,7 +8,7 @@
 		$tanggal = $pecah[2];
 		//Array Bulan
 		$array_bulan = array('Januari','Februari','Maret', 'April', 'Mei', 'Juni','Juli','Agustus','September','Oktober', 'November','Desember');
-		$bulan = $array_bulan[intval($pecah[1])];
+		$bulan = $array_bulan[intval($pecah[1])-1];
 		//Format Tahun
 		$tahun =  $pecah[0];
 		//Menampilkan hari dan tanggal
