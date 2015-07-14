@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2015 at 11:14 AM
+-- Generation Time: Jul 14, 2015 at 07:33 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -33,6 +33,21 @@ CREATE TABLE IF NOT EXISTS `m_chat` (
   `message` text NOT NULL,
   `tanggal` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_chat`
+--
+
+INSERT INTO `m_chat` (`id`, `id_entrepreneur`, `id_proposal`, `message`, `tanggal`) VALUES
+('80117f9b-a0ce-4889-9157-be6512ec77fd', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '1bd13079-2969-4ee4-a6d0-6de41d45c93b', '1', '2015-07-15 00:15:04'),
+('968182fb-6aae-436c-b47d-55fe79a27d3e', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '3e276ad9-44a1-4793-ae68-728c9f56bc24', 'apa', '2015-07-15 00:16:11'),
+('9887bb75-f9d8-4159-97a7-6ca2ec6886c6', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '7e39ecc8-c923-4c59-bac7-5d6eb622b72d', '2', '2015-07-15 00:15:15'),
+('addcd80e-acb2-4b94-ab3f-1b36a324cede', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '3e276ad9-44a1-4793-ae68-728c9f56bc24', 'apa', '2015-07-15 00:16:15'),
+('b285f1c8-d328-4ec3-836e-e79bb37902df', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '3e276ad9-44a1-4793-ae68-728c9f56bc24', 'gak apa2', '2015-07-15 00:29:31'),
+('c4b0acb8-31b6-48ba-bc5c-4b211a3bfee6', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '3e276ad9-44a1-4793-ae68-728c9f56bc24', 'kamu dmana', '2015-07-15 00:23:18'),
+('c67a2eec-0519-412a-8b55-fd5f1f1fabd1', '858ee057-2ea9-40bf-9b5e-8ee842cff391', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '3', '2015-07-15 00:15:31'),
+('d0b659e9-739c-42f0-93e6-00704d1cabdb', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '3e276ad9-44a1-4793-ae68-728c9f56bc24', 'apa sih', '2015-07-15 00:29:25'),
+('f0890dbb-4a59-46bc-9500-9043f680d86b', '1b8a1a89-7477-45b9-af45-8386aa8b5f88', '3e276ad9-44a1-4793-ae68-728c9f56bc24', '1', '2015-07-15 00:23:30');
 
 -- --------------------------------------------------------
 
@@ -264,7 +279,7 @@ INSERT INTO `t_proposal_usaha` (`id`, `id_owner`, `id_jenis_usaha`, `nama_propos
 -- Indexes for table `m_chat`
 --
 ALTER TABLE `m_chat`
- ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `m_chat_fk1` (`id_entrepreneur`), ADD KEY `m_chat_fk2` (`id_proposal`);
 
 --
 -- Indexes for table `m_entrepreneur`
@@ -317,6 +332,13 @@ ALTER TABLE `t_proposal_usaha`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `m_chat`
+--
+ALTER TABLE `m_chat`
+ADD CONSTRAINT `m_chat_fk1` FOREIGN KEY (`id_entrepreneur`) REFERENCES `m_entrepreneur` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `m_chat_fk2` FOREIGN KEY (`id_proposal`) REFERENCES `t_proposal_usaha` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `m_investasi`
