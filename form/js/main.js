@@ -1,4 +1,5 @@
 var dataUndangan = [];
+var dataUndanganProposalku = [];
 var dataTambahKaryawan = [];
 
 function toStep1() {
@@ -67,6 +68,9 @@ $(function() {
 	    format: "dd/mm/yyyy",
 	    language: "id"
 	});
+	$('#tanggalSchedule').datepicker({
+	    format: "yyyy-mm-dd"
+	});
 	$(document).on('change', '.btn-file :file', function() {
 	  	var input = $(this),
 	     	numFiles = input.get(0).files ? input.get(0).files.length : 1,
@@ -119,12 +123,26 @@ $(function() {
 	    $('#msgEmail').html("");
 	    $('#msgEmail').attr('class', "");
 	    $("#emailEntrepreneur").val("");
-	})
+	});
 	$('#myModal2').on('shown.bs.modal', function() {
 	    $('#msgEmail2').html("");
 	    $('#msgEmail2').attr('class', "");
 	    $("#emailKaryawan").val("");
-	})
+	});
+	$('#myModalProposalkuAjukanKaryawan').on('shown.bs.modal', function() {
+		dataUndanganProposalku = [];
+	    $('#msgEmailProposalku').html("");
+	    $('#rowAddKaryawanProposalku').html("");
+	    $('#msgEmailProposalku').attr('class', "");
+	    $("#emailEntrepreneurProposalku").val("");
+	});
+	$('#myModalProposalkuAjukanInvestor').on('shown.bs.modal', function() {
+		dataUndanganProposalku = [];
+	    $('#msgEmailProposalkuInvestor').html("");
+	    $('#rowAddKaryawanProposalkuInvestor').html("");
+	    $('#msgEmailProposalkuInvestor').attr('class', "");
+	    $("#emailEntrepreneurProposalkuInvestor").val("");
+	});
 	$("#kirim_undangan").click(function() {
 	  	$.ajax({
 	        url: "system/service_impl.php",
@@ -197,7 +215,7 @@ $(function() {
 			nilai_gaji_pegawai : $('#nilai_gaji_pegawai').val(),
 			nilai_persentase_owner : $('#nilai_investasi_owner').val()
 		}
-
+		var btnNode = this;
 	   $.ajax({
 	        url: "system/buat_proposal_baru_service.php",
 	        type: "POST",
@@ -208,7 +226,8 @@ $(function() {
 	        	if (e.length > 0) {
 	        		alert(e);
 	        	} else {
-		 			var nextId = $(this).parents('.tab-pane').next().attr("id");
+		 			var nextId = $(btnNode).parents('.tab-pane').next().attr("id");
+		 			// console.log(btnNode);
 	  				$('[href=#'+nextId+']').tab('show');
 	        	}
 	        },
@@ -216,6 +235,173 @@ $(function() {
 	            // Fail message
 	        },
 	    });
+	});
+	$("#add_undangan_karyawan_proposalku").click(function() {
+	  	$.ajax({
+	        url: "system/service_impl.php",
+	        type: "POST",
+	        data: {
+	            type: "add_undangan_proposalku",
+	            email: $("#emailEntrepreneurProposalku").val(),
+	            proposal_id: $("#proposal_id").val()
+	        },
+	        cache: false,
+	        dataType : "json",
+	        success: function(e) {
+	        	function bersih() {
+	        		$('#msgEmailProposalku').html("");
+	        		$('#msgEmailProposalku').attr('class', "");
+	        	}
+	        	console.log('e>>>>', e);
+	        	if (e.status == "sudah_ditambahkan") {
+	        		$('#msgEmailProposalku').html("<strong>"+$("#emailEntrepreneurProposalku").val()+"</strong> Sudah pernah mengajukan, Silahkan menunggu persetujuan !");
+	        		$('#msgEmailProposalku').attr('class', 'alert alert-warning');
+	        	} else {
+		        	if (parseInt(e.jumlah_result) > 0) {
+		        		if ($.inArray(e.id, dataUndanganProposalku) > -1) {
+		        			// $('#myModal').modal('toggle');
+		        			$('#msgEmailProposalku').html("<strong>"+$("#emailEntrepreneurProposalku").val()+"</strong> Telah Ditambahkan sebelumnya !");
+		        			$('#msgEmailProposalku').attr('class', 'alert alert-warning');
+		        			return;
+						}
+
+		        		dataUndanganProposalku.push(e.id);
+		  				$.unique(dataUndanganProposalku);
+
+		        		$('#msgEmailProposalku').html("Berhasil ! <strong>"+$("#emailEntrepreneurProposalku").val()+"</strong> Telah Diundang !");
+		        		$('#msgEmailProposalku').attr('class', 'alert alert-success');
+		        		setTimeout(function() {
+		        			// $('#myModal').modal('toggle');
+		        			$('#rowAddKaryawanProposalku').append('<div class="col-lg-3" style="max-width: 150px;"><div class="thumbnail"><img src="upload/photo_profile/'+e.file_photo+'" alt="" /><div class="caption">'+e.nama+'</div></div></div>');
+		        		}, 1000);
+
+		        	} else {
+		        		$('#msgEmailProposalku').html("Email <strong>"+$("#emailEntrepreneurProposalku").val()+"</strong> tidak Ditemukan !");
+		        		$('#msgEmailProposalku').attr('class', 'alert alert-danger');
+		        	}
+	        	}
+	        },
+	        error: function() {
+	            // Fail message
+	        },
+	    });
+	});
+	$("#add_undangan_investor_proposalku").click(function() {
+	  	$.ajax({
+	        url: "system/service_impl.php",
+	        type: "POST",
+	        data: {
+	            type: "add_undangan_investor_proposalku",
+	            email: $("#emailEntrepreneurProposalkuInvestor").val(),
+	            proposal_id: $("#proposal_id").val()
+	        },
+	        cache: false,
+	        dataType : "json",
+	        success: function(e) {
+	        	function bersih() {
+	        		$('#msgEmailProposalkuInvestor').html("");
+	        		$('#msgEmailProposalkuInvestor').attr('class', "");
+	        	}
+	        	console.log('e>>>>', e);
+	        	if (e.status == "sudah_ditambahkan") {
+	        		$('#msgEmailProposalkuInvestor').html("<strong>"+$("#emailEntrepreneurProposalkuInvestor").val()+"</strong> Sudah pernah mengajukan, Silahkan menunggu persetujuan !");
+	        		$('#msgEmailProposalkuInvestor').attr('class', 'alert alert-warning');
+	        	} else {
+		        	if (parseInt(e.jumlah_result) > 0) {
+		        		if ($.inArray(e.id, dataUndanganProposalku) > -1) {
+		        			// $('#myModal').modal('toggle');
+		        			$('#msgEmailProposalkuInvestor').html("<strong>"+$("#emailEntrepreneurProposalkuInvestor").val()+"</strong> Telah Ditambahkan sebelumnya !");
+		        			$('#msgEmailProposalkuInvestor').attr('class', 'alert alert-warning');
+		        			return;
+						}
+
+		        		dataUndanganProposalku.push(e.id);
+		  				$.unique(dataUndanganProposalku);
+
+		        		$('#msgEmailProposalkuInvestor').html("Berhasil ! <strong>"+$("#emailEntrepreneurProposalkuInvestor").val()+"</strong> Telah Diundang !");
+		        		$('#msgEmailProposalkuInvestor').attr('class', 'alert alert-success');
+		        		setTimeout(function() {
+		        			// $('#myModal').modal('toggle');
+		        			$('#rowAddKaryawanProposalkuInvestor').append('<div class="col-lg-3" style="max-width: 150px;"><div class="thumbnail"><img src="upload/photo_profile/'+e.file_photo+'" alt="" /><div class="caption">'+e.nama+'</div></div></div>');
+		        		}, 1000);
+
+		        	} else {
+		        		$('#msgEmailProposalkuInvestor').html("Email <strong>"+$("#emailEntrepreneurProposalkuInvestor").val()+"</strong> tidak Ditemukan !");
+		        		$('#msgEmailProposalkuInvestor').attr('class', 'alert alert-danger');
+		        	}
+	        	}
+	        },
+	        error: function() {
+	            // Fail message
+	        },
+	    });
+	});
+	$("#kirim_undangan_karyawan_proposalku").click(function() {
+		if (dataUndanganProposalku.length == 0) {
+			alert('Belum ada User yang di pilih');
+			return;
+		}
+	  	$.ajax({
+	        url: "system/service_impl.php",
+	        type: "POST",
+	        data: {
+	            type: "kirim_undangan_proposalku",
+	            email: dataUndanganProposalku,
+	            tipe: "PEGAWAI",
+	            owner: $('#id_owner').val(),
+	            proposal_id: $('#proposal_id').val()
+	        },
+	        cache: false,
+	        // dataType : "json",
+	        success: function(e) {
+	        	if (e.length > 0) { //gagal
+	        		alert("Entrepreneur berhasil di ajukan !");
+	        		window.location.reload()
+	        	} else {
+	        		alert("Proses gagal");
+	        	}
+	        },
+	        error: function() {
+	            // Fail message
+	        }
+	    });
+	});
+	$("#kirim_undangan_investor_proposalku").click(function() {
+		if (dataUndanganProposalku.length == 0) {
+			alert('Belum ada User yang di pilih');
+			return;
+		}
+	  	$.ajax({
+	        url: "system/service_impl.php",
+	        type: "POST",
+	        data: {
+	            type: "kirim_undangan_investor_proposalku",
+	            email: dataUndanganProposalku,
+	            tipe: "INVESTOR",
+	            owner: $('#id_owner').val(),
+	            proposal_id: $('#proposal_id').val()
+	        },
+	        cache: false,
+	        // dataType : "json",
+	        success: function(e) {
+	        	// console.log("BERHASIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", e);
+	        	if (e.length > 0) { //gagal
+	        		alert("Entrepreneur berhasil di undang !");
+	        		window.location.reload()
+	        	} else {
+	        		alert("Proses gagal");
+	        	}
+	        },
+	        error: function(e) {
+	            // Fail message
+	            console.log("ERROR>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", e);
+	        }
+	    });
+	});
+	$("#download_draft_proposalku").click(function(e) {
+		// console.log($("#doc_id").val());
+	    e.preventDefault();  //stop the browser from following
+	    window.location.href = 'upload/document/'+$("#doc_id").val();
 	});
 });
 
