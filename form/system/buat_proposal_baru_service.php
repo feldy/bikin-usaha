@@ -17,8 +17,6 @@
 		$nilai_persentase_owner = $_POST['nilai_persentase_owner'];
 		$nilai_gaji_pegawai = $_POST['nilai_gaji_pegawai'];
 
-
-
 		$validasiNama = mysql_query("select * from t_proposal_usaha o where o.nama_proposal = '$nama_proposal'") or die(mysql_error());
 		$numROW = mysql_num_rows($validasiNama);
 
@@ -30,13 +28,13 @@
 
 
 			if ($result) {
-				$e = explode(",", $data_undangan);
-				$f = explode(",", $nilai_persentase_investor);
+				$e = array_filter(explode(",", $data_undangan));
+				$f = array_filter(explode(",", $nilai_persentase_investor));
 				for($i = 0; $i < count($e); $i++) {
 					$id_detail = gen_uuid();
 					$idEntrepreneur = $e[$i];
 
-				   	mysql_query("INSERT INTO m_undangan VALUES('$id_detail', '$owner_id', '$idEntrepreneur', '$id', now(), 'Undangan Join Usaha', 0)") or die(mysql_error());
+				   	mysql_query("INSERT INTO m_undangan VALUES('$id_detail', '$owner_id', '$idEntrepreneur', '$id', now(), 'JOIN_USAHA', 0)") or die(mysql_error());
 				}
 				for($i = 0; $i < count($f); $i++) {
 					$id_detail = gen_uuid();
