@@ -36,23 +36,6 @@ session_start();
 </head>
 
 <body>
-    <?php
-        if (isset($_GET['page'])) {
-            if ($_GET['page'] == "login") {
-                } elseif ($_GET['page'] == "daftar") {
-                } elseif ($_GET['page'] == "jenis_usaha") {
-                } elseif ($_GET['page'] == "approval") {
-                } elseif ($_GET['page'] == "proposalku") {
-                } elseif ($_GET['page'] == "buat_proposal") {
-                } elseif ($_GET['page'] == "join_usaha") {
-                } else {
-                    include("halaman_utama.php");
-                }
-        } else {
-            include("halaman_utama.php");
-        }
-
-    ?>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -88,8 +71,8 @@ session_start();
                                 $activeStatus = "join_usaha";
                             }
                         }
-                        if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
-                        } else {
+                        if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {} 
+                        else {
                     ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
@@ -108,14 +91,13 @@ session_start();
                     <?php } 
                     if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                     ?>
-                    <li <?php if ($activeStatus == "daftar") {echo "class='active'";} ?>>
+                    <li <?php if ($activeStatus == "daftar") {echo "class='active'";} ?> >
                         <a href="?page=daftar">Coba Yuk Jadi Member!!</a>
                     </li>
-                    <?php 
-                    }
+                    <?php }
                         if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                     ?>    
-                    <li <?php if ($activeStatus == "login") {echo "class='active'";} ?>>
+                    <li <?php if ($activeStatus == "login") {echo "class='active'";} ?> >
                         <a href="?page=login">Login</a>
                     </li>
                     <?php
@@ -137,10 +119,29 @@ session_start();
                                 <a href="?page=proposalku&id_proposal=<?php echo $arr_result['id'];?>"><?php echo $arr_result['nama_proposal'];?></a>
                             </li>
                             <?php } ?>
+
+                            <!-- separator -->
+                            <li role="separator" class="divider"></li>
+                            <?php 
+                                $id_proposal = "";
+                                if (isset($_GET['id_proposal'])) {
+                                    $id_proposal = $_GET['id_proposal'];
+                                }
+                                $user_sid = $_SESSION['user_sid'];
+                                $result = mysql_query("SELECT * FROM t_anggota_proposal_usaha o INNER JOIN t_proposal_usaha p ON o.id_proposal_usaha = p.id where o.id_entrepreneur = '$user_sid' and status = 'APPROVED' group by o.id_entrepreneur  ") or die(mysql_error());
+                                while($arr_result=mysql_fetch_array($result)){                                
+                            ?>
+                            <li <?php if($id_proposal == $arr_result['id_proposal_usaha']) {echo "class='active'";} ?> >
+                                <a href="?page=proposalku&id_proposal=<?php echo $arr_result['id_proposal_usaha'];?>"><?php echo $arr_result['nama_proposal'];?></a>
+                            </li>
+                            <?php } ?>
                         </ul>
                     </li>
                     <li <?php if ($activeStatus == "logout") {echo "class='active'";} ?>>
                         <a href="system/logout_service.php">Logout</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user_nama']; ?></a>
                     </li>
                     <?php } ?>
                 </ul>
@@ -149,6 +150,24 @@ session_start();
         </div>
         <!-- /.container -->
     </nav>
+
+    <?php
+        if (isset($_GET['page'])) {
+            if ($_GET['page'] == "login") {
+                } elseif ($_GET['page'] == "daftar") {
+                } elseif ($_GET['page'] == "jenis_usaha") {
+                } elseif ($_GET['page'] == "approval") {
+                } elseif ($_GET['page'] == "proposalku") {
+                } elseif ($_GET['page'] == "buat_proposal") {
+                } elseif ($_GET['page'] == "join_usaha") {
+                } else {
+                    include("halaman_utama.php");
+                }
+        } else {
+            include("halaman_utama.php");
+        }
+
+    ?>
 
     <!-- Page Content -->
     <div class="container">
@@ -191,6 +210,7 @@ session_start();
 
     <!-- jQuery -->
     <script src="../js/jquery.js"></script>
+    <script src="lib/jquery.form.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
 
