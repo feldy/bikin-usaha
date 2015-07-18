@@ -2,6 +2,10 @@
 <?php include "system/gen_uuid_service.php";?>
 <?php include "system/gen_tanggal.php";
 session_start();
+$textSearch = "";
+if (isset($_POST['text_search_proposal'])) {
+    $textSearch = $_POST['text_search_proposal'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +39,7 @@ session_start();
     <link href="lib/editor/dist/summernote.css" rel="stylesheet">
 </head>
 
-<body>
+<body style='background-image: url("white_carbon.png");'>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -52,6 +56,19 @@ session_start();
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="col-md-10">
+                            <form method="POST" action="?page=search_proposal">
+                                <div class="input-group" style="margin-top: 9px; margin-right: 0px;">
+                                <!-- slkdfjsldfjlsdjfl -->
+                                    <input value="<?php echo $textSearch; ?>" name="text_search_proposal" type="text" class="form-control" placeHolder="Search Proposal">
+                                    <span class="input-group-btn" style="display: block;">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
                     <?php
                         $activeStatus = "";
                         if (isset($_GET['page'])) {
@@ -69,6 +86,10 @@ session_start();
                                 $activeStatus = "buat_proposal";
                             } elseif ($_GET['page'] == "join_usaha") {
                                 $activeStatus = "join_usaha";
+                            } elseif ($_GET['page'] == "my_account") {
+                                $activeStatus = "my_account";
+                            } elseif ($_GET['page'] == "search_proposal") {
+                                $activeStatus = "search_proposal";
                             }
                         }
                         if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {} 
@@ -128,7 +149,7 @@ session_start();
                                     $id_proposal = $_GET['id_proposal'];
                                 }
                                 $user_sid = $_SESSION['user_sid'];
-                                $result = mysql_query("SELECT * FROM t_anggota_proposal_usaha o INNER JOIN t_proposal_usaha p ON o.id_proposal_usaha = p.id where o.id_entrepreneur = '$user_sid' and status = 'APPROVED' group by o.id_entrepreneur  ") or die(mysql_error());
+                                $result = mysql_query("SELECT * FROM t_anggota_proposal_usaha o INNER JOIN t_proposal_usaha p ON o.id_proposal_usaha = p.id where o.id_entrepreneur = '$user_sid' and status = 'APPROVED' group by o.id  ") or die(mysql_error());
                                 while($arr_result=mysql_fetch_array($result)){                                
                             ?>
                             <li <?php if($id_proposal == $arr_result['id_proposal_usaha']) {echo "class='active'";} ?> >
@@ -141,7 +162,7 @@ session_start();
                         <a href="system/logout_service.php">Logout</a>
                     </li>
                     <li>
-                        <a href="#"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user_nama']; ?></a>
+                        <a href="?page=my_account&user_id=<?php echo $_SESSION['user_sid'];?>"><i class="glyphicon glyphicon-user"></i> <?php echo $_SESSION['user_nama']; ?></a>
                     </li>
                     <?php } ?>
                 </ul>
@@ -160,6 +181,8 @@ session_start();
                 } elseif ($_GET['page'] == "proposalku") {
                 } elseif ($_GET['page'] == "buat_proposal") {
                 } elseif ($_GET['page'] == "join_usaha") {
+                } elseif ($_GET['page'] == "my_account") {
+                } elseif ($_GET['page'] == "search_proposal") {
                 } else {
                     include("halaman_utama.php");
                 }
@@ -187,6 +210,10 @@ session_start();
                     include("buat_proposal.php");
                 } elseif ($_GET['page'] == "join_usaha") {
                     include("join_usaha.php");
+                } elseif ($_GET['page'] == "my_account") {
+                    include("my_account.php");
+                } elseif ($_GET['page'] == "search_proposal") {
+                    include("search_proposal.php");
                 } else {
                     // include("halaman_utama.php");
                 }

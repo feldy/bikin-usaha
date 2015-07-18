@@ -358,14 +358,16 @@ $(function() {
 	        cache: false,
 	        // dataType : "json",
 	        success: function(e) {
+	        	// console.log("<>><><><><><><><><><><<><><><><><><><><", e.length);
 	        	if (e.length > 0) { //gagal
+	        		alert("Proses gagal");
+	        	} else {
 	        		alert("Entrepreneur berhasil di ajukan !");
 	        		window.location.reload()
-	        	} else {
-	        		alert("Proses gagal");
 	        	}
 	        },
-	        error: function() {
+	        error: function(e) {
+	        	// console.log("<GAGAL>><><><><><><><><><><<><><><><><><><><", e);
 	            // Fail message
 	        }
 	    });
@@ -390,10 +392,10 @@ $(function() {
 	        success: function(e) {
 	        	// console.log("BERHASIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", e);
 	        	if (e.length > 0) { //gagal
+	        		alert("Proses gagal");
+	        	} else {
 	        		alert("Entrepreneur berhasil di undang !");
 	        		window.location.reload()
-	        	} else {
-	        		alert("Proses gagal");
 	        	}
 	        },
 	        error: function(e) {

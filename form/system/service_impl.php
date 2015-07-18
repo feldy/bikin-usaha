@@ -86,13 +86,14 @@
 		} elseif ($type == "kirim_undangan_proposalku") {
 			$email = $_POST['email'];
 			$tipe = $_POST['tipe'];
-			$owner = $_POST['owner'];
+			// $owner = $_POST['owner']; jangan pakai owner tapi user sid yang login
+			$owner = $_SESSION['user_sid'];
 			$proposal_id = $_POST['proposal_id'];
 			$status = "";
 			for ($i = 0; $i < count($email); $i++) {
 				$id = gen_uuid();
 				$email1 = $email[$i];
-				$x = mysql_query("INSERT INTO m_undangan VALUES('$id','$email1','$owner','$proposal_id', now(),'UNDANGAN PEGAWAI', 0)") or die(mysql_error());
+				$x = mysql_query("INSERT INTO m_undangan VALUES('$id','$owner','$email1', '$proposal_id', now(),'UNDANGAN PEGAWAI', 0)") or die(mysql_error());
 				if ($x) {} else {
 					$status = 'error';
 				}			
@@ -101,13 +102,14 @@
 		} elseif ($type == "kirim_undangan_investor_proposalku") {
 			$email = $_POST['email'];
 			$tipe = $_POST['tipe'];
-			$owner = $_POST['owner'];
+			// $owner = $_POST['owner']; jangan pakai owner tapi user sid yang login
+			$owner = $_SESSION['user_sid'];
 			$proposal_id = $_POST['proposal_id'];
-			$status = "success";
+			$status = "";
 			for ($i = 0; $i < count($email); $i++) {
 				$id = gen_uuid();
 				$email1 = $email[$i];
-				$x = mysql_query("INSERT INTO m_undangan VALUES('$id','$email1','$owner','$proposal_id', now(),'UNDANGAN INVESTOR', 0)") or die(mysql_error());
+				$x = mysql_query("INSERT INTO m_undangan VALUES('$id', '$owner', '$email1', '$proposal_id', now(),'UNDANGAN INVESTOR', 0)") or die(mysql_error());
 				if ($x) {} else {
 					$status = 'error';
 				}			

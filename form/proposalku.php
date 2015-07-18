@@ -158,21 +158,109 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <ul class="timeline">
-                                    <li>
-                                        <div class="timeline-badge"><i class="fa fa-check"></i>
+                                    <?php 
+                                        $strQryTimeline = "  SELECT * FROM (
+                                                                    -- undangan 
+                                                                    SELECT          u.id as id, 
+                                                                                    u.proposal_id as proposal_id, 
+                                                                                    u.tanggal as tanggal, 
+                                                                                    u.keterangan as keterangan,
+                                                                                    e.nama as nama_customer1,
+                                                                                    e2.nama as nama_customer2,
+                                                                                    '_UNDANGAN_' as tipe,
+                                                                                    '' as deskripsi,
+                                                                                    '' as status
+                                                                    FROM            m_undangan u 
+                                                                    INNER JOIN      m_entrepreneur e ON u.from_id = e.id 
+                                                                    INNER JOIN      m_entrepreneur e2 ON u.to_id = e2.id 
+                                                                    WHERE           u.proposal_id = '$id_proposal'
+
+                                                                    UNION
+                                                                    -- approvement
+                                                                    SELECT          t.id as id, 
+                                                                                    t.id_proposal_usaha as proposal_id, 
+                                                                                    t.tanggal as tanggal, 
+                                                                                    t.tipe_anggota as keterangan,
+                                                                                    f.nama as nama_customer1,
+                                                                                    '' as nama_customer2,
+                                                                                    '_APPROVEMENT_' as tipe,
+                                                                                    '' as deskripsi,
+                                                                                    t.status as status
+                                                                    FROM            t_anggota_proposal_usaha t 
+                                                                    INNER JOIN      m_entrepreneur f ON t.id_entrepreneur = f.id 
+                                                                    WHERE           t.id_proposal_usaha = '$id_proposal' 
+
+                                                                    UNION 
+                                                                    -- schedule
+                                                                    SELECT          s.id as id, 
+                                                                                    s.id_proposal as proposal_id, 
+                                                                                    s.tanggal as tanggal, 
+                                                                                    s.title as keterangan,
+                                                                                    g.nama as nama_customer1,
+                                                                                    '' as nama_customer2,
+                                                                                    '_SCHEDULE_' as tipe,
+                                                                                    s.deskripsi as deskripsi,
+                                                                                    s.status as status
+                                                                    FROM            m_schedule s 
+                                                                    INNER JOIN      m_entrepreneur g ON s.id_entreprener = g.id 
+                                                                    WHERE           s.id_proposal = '$id_proposal'
+                                                                    ) hasil ORDER BY tanggal desc
+                                                                    ";
+                                        $qryTimeline = mysql_query($strQryTimeline) or die (mysql_error());
+                                        $count = 0;
+                                        $inverted = "";
+                                        $title = "";
+                                        $message = "";
+                                        $icon = "";
+                                        $badge = "";
+
+                                        while ($arrQryTimeline = mysql_fetch_array($qryTimeline)) {
+                                            $count++;
+                                            if ($count % 2 == 0) {
+                                                $inverted = 'class="timeline-inverted"';
+                                            } else {
+                                                $inverted = '';
+                                            }
+
+                                            if ($arrQryTimeline['tipe'] == "_UNDANGAN_") {
+                                                $badge = "primary";
+                                                $title = $arrQryTimeline['nama_customer1']." Mengundang ".$arrQryTimeline['nama_customer2']." Untuk Bergabung";
+                                                $icon = "fa fa-plus-circle";
+                                            } else if ($arrQryTimeline['tipe'] == "_APPROVEMENT_") {
+                                                if ($arrQryTimeline['status'] == "NEW") {
+                                                    $badge = "info";
+                                                    $title = "Permintaan Join oleh ".$arrQryTimeline['nama_customer1']."";
+                                                    $icon = "fa fa-user";
+                                                } else if ($arrQryTimeline['status'] == "APPROVED") {
+                                                    $badge = "success";
+                                                    $title = $arrQryTimeline['nama_customer1']." Telah bergabung !";
+                                                    $icon = "fa fa-check";
+                                                } else if ($arrQryTimeline['status'] == "REJECTED") {
+                                                    $badge = "danger";
+                                                    $title = $arrQryTimeline['nama_customer1']." Telah Ditolak oleh Owner !";
+                                                    $icon = "fa fa-times";
+                                                } 
+                                            } else if ($arrQryTimeline['tipe'] == "_SCHEDULE_") {
+                                                $badge = "warning";
+                                                $title = $arrQryTimeline['nama_customer1']." Menambahkan Acara ".$arrQryTimeline['keterangan']."";
+                                                $icon = "fa fa-calendar";
+                                            }
+                                    ?>
+                                    <li <?php echo $inverted; ?>>
+                                        <div class="timeline-badge <?php echo $badge;?>"><i class="<?php echo $icon;?>"></i>
                                         </div>
                                         <div class="timeline-panel">
                                             <div class="timeline-heading">
-                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                                <p><small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via Twitter</small>
+                                                <h4 class="timeline-title"><?php echo $title;?></h4>
+                                                <p><small class="text-muted"><i class="fa fa-clock-o"></i> <span data-livestamp="<?php echo $arrQryTimeline['tanggal']; ?>"></span></small>
                                                 </p>
                                             </div>
                                             <div class="timeline-body">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>
+                                                <p><?php echo $arrQryTimeline['deskripsi'];?></p>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="timeline-inverted">
+                                    <!-- <li class="timeline-inverted">
                                         <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
                                         </div>
                                         <div class="timeline-panel">
@@ -184,29 +272,8 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
                                             </div>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-                                        </div>
-                                        <div class="timeline-panel">
-                                            <div class="timeline-heading">
-                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                            </div>
-                                            <div class="timeline-body">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-inverted">
-                                        <div class="timeline-panel">
-                                            <div class="timeline-heading">
-                                                <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                            </div>
-                                            <div class="timeline-body">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    </li> -->
+                                    <?php } ?>
                                 </ul>
                             </div>
                             <!-- /.panel-body -->
@@ -418,7 +485,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                 <div class="row">
                     <script type="text/javascript">
                         setInterval(function() {
-                            console.log('loaddd');
+                            // console.log('loaddd');
                             $.ajax({
                                 url: "system/service_impl.php",
                                 type: "POST",
