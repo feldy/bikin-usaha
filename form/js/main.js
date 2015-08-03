@@ -195,7 +195,7 @@ $(function() {
 		var result = "";
 
 		for (var i = 0; i < value; i++) {
-			result += '<div class="form-group input-group"><input id="nilaiInvest'+i+'" name="nilaiInvest[]" type="number" class="form-control" data-validation-number-message="Isi harus angka !" placeholder="%" ><span class="input-group-addon">%</span></div>';
+			result += '<div class="form-group input-group"><input id="nilaiInvest'+i+'" name="nilaiInvest[]" type="number" min="1" max="100" class="form-control" data-validation-number-message="Isi harus angka !" placeholder="%" ><span class="input-group-addon">%</span></div>';
 		}
 		$('#insert_input_investasi').find('div').remove().end().append(result);
 		// console.log(value);

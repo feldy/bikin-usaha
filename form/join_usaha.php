@@ -24,7 +24,7 @@
                                     u.pic_4 as pic_4 
                         FROM        t_proposal_usaha o 
                         INNER JOIN  m_entrepreneur e ON o.id_owner = e.id 
-                        INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id 
+                        INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id  and u.is_active = 1
                         WHERE       o.id = '$id_proposal'
                         GROUP BY    o.id
                         ") or die(mysql_error());
@@ -151,7 +151,7 @@
         <h6><i class="fa fa-fw fa-map-marker"></i>Lokasi <?php echo $map['kota']; ?></h6>
         <h3>Details</h3>
         <ul>
-            <li>Modal :Rp. <?php echo number_format($map['modal']); ?> </li>
+            <!-- <li>Modal :Rp. <?php echo number_format($map['modal']); ?> </li> -->
             <li>Supplier: <?php echo $map['nama_supplier']; ?></li>
             <li>Kontak: <?php echo $map['contact_supplier']; ?></li>
             <li><?php echo date_format(date_create($map['tanggal']), "d/m/Y"); ?></li>
@@ -165,6 +165,17 @@
         <p><?php echo $map['u_deskripsi'] ;?></p>
     </div>
 </div>
+
+<?php
+    $tipeUser = "";
+    if (isset($_SESSION['tipe_user'])) {
+        $tipeUser = $_SESSION['tipe_user'];
+    }
+
+    if ($tipeUser == "Entrepreneur") {
+
+    } else {
+?>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
@@ -172,6 +183,7 @@
         </h1>
     </div>
     <?php
+        if ($tipeUser == "Investor" || $tipeUser == "") {        
         //QUERY UNTUK SELISIH INVESTOR
         $qry2 = mysql_query("SELECT     *
                             FROM        m_investasi i
@@ -199,13 +211,15 @@
     </div>
         <?php 
             } 
+        }
 
+        if ($tipeUser == "Pegawai" || $tipeUser == "") {        
             $gaji = $map['gaji_pegawai'];
             $gaji = $gaji/1000;
             //QUERY UNTUK SELISIH PEGAWAI
             $qry1 = mysql_query("   SELECT      (ju.max_jumlah_pegawai - count(apu.id)) as lowongan_tersedia
                                     FROM        t_proposal_usaha pu
-                                    INNER JOIN  m_jenis_usaha ju ON pu.id_jenis_usaha = ju.id
+                                    INNER JOIN  m_jenis_usaha ju ON pu.id_jenis_usaha = ju.id and ju.is_active = 1
                                     LEFT JOIN   t_anggota_proposal_usaha apu ON apu.id_proposal_usaha = pu.id and apu.status = 'APPROVED' and apu.tipe_anggota = 'pegawai'
                                     WHERE       pu.id = '$id_proposal'") or die(mysql_error());
             $result1 = mysql_fetch_array($qry1);
@@ -226,4 +240,6 @@
             </ul>
         </div>
     </div>
+    <?php } ?>
 </div>
+<?php } ?>

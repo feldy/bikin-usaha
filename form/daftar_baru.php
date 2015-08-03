@@ -34,12 +34,62 @@
                             </div>
                             <div class="control-group form-group">
                                 <div class="controls">
+                                    <label>Username :</label>
+                                    <input name="username" type="text" class="form-control"  
+                                    required 
+                                    data-validation-required-message="Masukan email kamu donk !"
+                                    data-validation-email-message="Email tidak valid !"
+                                    >
+                                    <p class="help-block"></p>
+                                </div>
+                            </div>
+                            <div class="control-group form-group">
+                                <div class="controls">
                                     <label>Password :</label>
                                     <input name="password_utama" type="password" class="form-control"  required 
                                     data-validation-required-message="Masukan password kamu donk !">
                                     <p class="help-block"></p>
                                 </div>
                             </div>
+                            <div class="control-group form-group">
+                                <label>Tipe User :</label>
+                                <div class="controls">
+                                    <select name="tipe_user" class="form-control">
+                                        <option value="Entrepreneur">Entrepreneur</option>
+                                        <option value="Investor">Investor</option>
+                                        <option value="Pegawai">Pegawai</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <fieldset style="border: solid 1px #efefef;padding: 17px;">
+                                <legend><h4>*Persyaratan</h4></legend>
+                                <div class="control-group form-group">
+                                    <div class="controls">
+                                        <label>SCAN KTP :</label>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Browse&hellip; <input name="ktp" type="file" >
+                                                </span>
+                                            </span>
+                                            <input type="text" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-group form-group" id="field_npwp">
+                                    <div class="controls">
+                                        <label>SCAN NPWP :</label>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                    Browse&hellip; <input name="npwp" type="file" >
+                                                </span>
+                                            </span>
+                                            <input type="text" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Tempat Lahir :</label>
@@ -66,7 +116,7 @@
                             <div class="control-group form-group">
                                 <div class="controls">
                                     <label>Nomor Telepon :</label>
-                                    <input name="tlp" type="text" class="form-control" />
+                                    <input id="tlp" name="tlp" type="text" class="form-control" />
                                     <p class="help-block"></p>
                                 </div>
                             </div>
@@ -77,19 +127,40 @@
                                     <p class="help-block"></p>
                                 </div>
                             </div> 
+
                             <div class="control-group form-group">
-                                <div class="controls">
+                                <label>Upload Photo Kamu :</label>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <span class="btn btn-primary btn-file">
+                                            Browse&hellip; <input name="file2" type="file">
+                                        </span>
+                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                </div>
+
+                                <!-- <div class="controls">
                                     <label>Upload Photo Kamu :</label>
                                     <input name="file2" type="file" />
                                     <p class="help-block"></p>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="control-group form-group">
-                                <div class="controls">
+                                <label>Upload CV Kamu :</label>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <span class="btn btn-primary btn-file">
+                                            Browse&hellip; <input name="file" type="file">
+                                        </span>
+                                    </span>
+                                    <input type="text" class="form-control" readonly>
+                                </div>
+
+                              <!--   <div class="controls">
                                     <label>Upload CV Kamu :</label>
                                     <input name="file" type="file" />
                                     <p class="help-block"></p>
-                                </div>
+                                </div> -->
                             </div>
                             <div id="success"></div>
                             <!-- For success/fail messages -->

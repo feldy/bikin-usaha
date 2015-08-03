@@ -11,7 +11,7 @@
     <div class="carousel-inner">
         <?php
             //find proposal paling terbaru (TODO: paling banyak klik atau Donatur terbesar)
-            $result = mysql_query("SELECT s.pic_1 as gambar1, o.nama_proposal as nama, o.id as id_proposal FROM t_proposal_usaha o INNER JOIN m_jenis_usaha s on o.id_jenis_usaha = s.id order by o.tanggal desc LIMIT 0, 10 ") or die(mysql_error());
+            $result = mysql_query("SELECT s.pic_1 as gambar1, o.nama_proposal as nama, o.id as id_proposal FROM t_proposal_usaha o INNER JOIN m_jenis_usaha s on o.id_jenis_usaha = s.id and s.is_active = 1 order by o.tanggal desc LIMIT 0, 10 ") or die(mysql_error());
             $count = 0;
             $active = "";
             while($arr_result=mysql_fetch_array($result)){
@@ -57,7 +57,7 @@
         </div>
         <?php
             //tampilkan semua proposal yang sudah dibuat berdasarkan lowongan investor dan karyawan yang available
-            $result = mysql_query("SELECT s.pic_1 as gambar1, o.nama_proposal as nama, o.id as id_proposal, o.informasi_proposal as informasi, o.kota as kota FROM t_proposal_usaha o INNER JOIN m_jenis_usaha s on o.id_jenis_usaha = s.id order by o.tanggal desc LIMIT 0, 10 ") or die(mysql_error());
+            $result = mysql_query("SELECT s.pic_1 as gambar1, o.nama_proposal as nama, o.id as id_proposal, o.informasi_proposal as informasi, o.kota as kota FROM t_proposal_usaha o INNER JOIN m_jenis_usaha s on o.id_jenis_usaha = s.id and s.is_active = 1 order by o.tanggal desc LIMIT 0, 10 ") or die(mysql_error());
             $count = 0;
             $active = "";
             while($arr_result=mysql_fetch_array($result)){
@@ -82,6 +82,7 @@
         <?php } ?>
     </div>
     <!-- /.row -->
+    <hr>
     <!-- Features Section -->
     <div class="row">
         <div class="col-lg-12">
@@ -195,12 +196,11 @@
                         <a href="#"><?php echo $arr_result['nama']; ?></a>
                     </h3>
                     <ul>
-                        <li>Modal <strong>Rp. <?php echo number_format($arr_result['modal'], 0); ?></strong>
-                        </li>
+                        <!-- <li>Modal <strong>Rp. <?php echo number_format($arr_result['modal'], 0); ?></strong></li> refisi bu NIA-->
                         <li>Membutuhkan <strong><?php echo number_format($arr_result['max_jumlah_pegawai'], 0); ?> Orang</strong> Pegawai</li>
                         <li>Kategori <strong><?php echo $arr_result['kategori_jenis']; ?></strong></li>
                     </ul>
-                    <p><?php echo $line.". . ."; ?></p>
+                    <p><?php echo strip_tags($line.". . .", "<rr>"); ?></p>
                 </div>
         <?php 
                 $count++;

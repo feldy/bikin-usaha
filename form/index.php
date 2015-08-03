@@ -1,10 +1,16 @@
 <?php include "system/config_service.php";?>
 <?php include "system/gen_uuid_service.php";?>
+<?php include "system/gen_convert_without_tag.php";?>
 <?php include "system/gen_tanggal.php";
 session_start();
 $textSearch = "";
 if (isset($_POST['text_search_proposal'])) {
     $textSearch = $_POST['text_search_proposal'];
+}
+
+$tipeUser = "";
+if (isset($_SESSION['tipe_user'])) {
+    $tipeUser = $_SESSION['tipe_user'];
 }
 ?>
 
@@ -98,14 +104,21 @@ if (isset($_POST['text_search_proposal'])) {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            <?php 
+                                $caption = "Approval";
+                                if ($tipeUser == "Investor" || $tipeUser == "Pegawai") {
+                                    $caption = "Undangan";
+                                } else {
+                            ?>
                             <li <?php if ($activeStatus == "buat_proposal") {echo "class='active'";} ?>>
                                 <a href="?page=buat_proposal">Buat Proposal Usaha</a>
                             </li>
                             <li <?php if ($activeStatus == "jenis_usaha") {echo "class='active'";} ?>>
                                 <a href="?page=jenis_usaha">Pengajuan Jenis Usaha Baru</a>
                             </li>
+                            <?php } ?>
                             <li <?php if ($activeStatus == "approval") {echo "class='active'";} ?>>
-                                <a href="?page=approval">Approval</a>
+                                <a href="?page=approval"><?php echo $caption;?></a>
                             </li>
                         </ul>
                     </li>
@@ -133,7 +146,7 @@ if (isset($_POST['text_search_proposal'])) {
                                     $id_proposal = $_GET['id_proposal'];
                                 }
                                 $user_sid = $_SESSION['user_sid'];
-                                $result = mysql_query("SELECT * FROM t_proposal_usaha o where o.id_owner = '$user_sid' ") or die(mysql_error());
+                                $result = mysql_query("SELECT o.id as id, o.nama_proposal as nama_proposal FROM t_proposal_usaha o INNER JOIN m_jenis_usaha u on o.id_jenis_usaha = u.id and u.is_active = 1 where o.id_owner = '$user_sid' ") or die(mysql_error());
                                 while($arr_result=mysql_fetch_array($result)){
                             ?>
                             <li <?php if($id_proposal == $arr_result['id']) {echo "class='active'";} ?> >
@@ -149,7 +162,7 @@ if (isset($_POST['text_search_proposal'])) {
                                     $id_proposal = $_GET['id_proposal'];
                                 }
                                 $user_sid = $_SESSION['user_sid'];
-                                $result = mysql_query("SELECT * FROM t_anggota_proposal_usaha o INNER JOIN t_proposal_usaha p ON o.id_proposal_usaha = p.id where o.id_entrepreneur = '$user_sid' and status = 'APPROVED' group by o.id  ") or die(mysql_error());
+                                $result = mysql_query("SELECT o.id_proposal_usaha as id_proposal_usaha, p.nama_proposal as nama_proposal  FROM t_anggota_proposal_usaha o INNER JOIN t_proposal_usaha p ON o.id_proposal_usaha = p.id INNER JOIN m_jenis_usaha u on p.id_jenis_usaha = u.id and u.is_active = 1 where o.id_entrepreneur = '$user_sid' and status = 'APPROVED' group by o.id  ") or die(mysql_error());
                                 while($arr_result=mysql_fetch_array($result)){                                
                             ?>
                             <li <?php if($id_proposal == $arr_result['id_proposal_usaha']) {echo "class='active'";} ?> >
@@ -183,6 +196,8 @@ if (isset($_POST['text_search_proposal'])) {
                 } elseif ($_GET['page'] == "join_usaha") {
                 } elseif ($_GET['page'] == "my_account") {
                 } elseif ($_GET['page'] == "search_proposal") {
+                } elseif ($_GET['page'] == "vw_user") {
+                } elseif ($_GET['page'] == "vw_owner") {
                 } else {
                     include("halaman_utama.php");
                 }
@@ -214,6 +229,10 @@ if (isset($_POST['text_search_proposal'])) {
                     include("my_account.php");
                 } elseif ($_GET['page'] == "search_proposal") {
                     include("search_proposal.php");
+                } elseif ($_GET['page'] == "vw_user") {
+                    include("vw_user.php");
+                } elseif ($_GET['page'] == "vw_owner") {
+                    include("vw_owner.php");
                 } else {
                     // include("halaman_utama.php");
                 }
@@ -246,6 +265,7 @@ if (isset($_POST['text_search_proposal'])) {
     <script src="lib/editor/dist/summernote.min.js"></script>
     <script src="lib/moment.min.js"></script>
     <script src="lib/livestamp.js"></script>
+    <script src="lib/jquery.number.js"></script>
     <script src="js/main.js"></script>
     <script src="js/action.js"></script>
     <script src="js/action.js"></script>

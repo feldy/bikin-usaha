@@ -23,7 +23,7 @@
                                             j.pic_1 as gambar_1,
                                             e.nama as nama_entrepreneur
                                 FROM        t_proposal_usaha p 
-                                INNER JOIN  m_jenis_usaha j ON p.id_jenis_usaha = j.id
+                                INNER JOIN  m_jenis_usaha j ON p.id_jenis_usaha = j.id and j.is_active = 1
                                 INNER JOIN  m_entrepreneur e ON p.id_owner = e.id
                                 WHERE       p.nama_proposal like '%$textSearch%'
                             ";

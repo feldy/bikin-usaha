@@ -21,7 +21,7 @@
                         <form action="system/login_service.php" method="post" name="sentMessage" id="contactForm" novalidate>
                             <div class="control-group form-group">
                                 <div class="controls">
-                                    <label>Email:</label>
+                                    <label>Username:</label>
                                     <input name="email"  type="text" class="form-control"  required data-validation-required-message="Masukan email kamu donk !    ">
                                     <p class="help-block"></p>
                                 </div>

@@ -42,7 +42,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                 <label>Modal :</label>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Rp</span>
-                                    <input name="modal" type="text" class="form-control">
+                                    <input name="modal" type="text" id="modal" class="form-control">
                                 </div>
                                 <!-- <input type="text" class="form-control"  required data-validation-required-message="Masukan nama lengkap kamu donk !"> -->
                                 <p class="help-block"></p>
@@ -52,7 +52,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                             <div class="controls">
                                 <label>Maksimal Jumlah Pegawai :</label>
                                 <div class="form-group input-group">
-                                    <input name="jumlah_pegawai" type="number" class="form-control"
+                                    <input name="jumlah_pegawai" type="text" id="jumlah_pegawai" max="50" min="1" class="form-control"
                                     data-validation-number-message="Isi harus angka !"
                                     >
                                     <span class="input-group-addon">Orang</span>
@@ -63,7 +63,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Nomor Telepon :</label>
-                                <input name="no_tlp" type="text" class="form-control" />
+                                <input name="no_tlp" id="no_tlp" type="text" class="form-control" />
                                 <p class="help-block"></p>
                             </div>
                         </div>

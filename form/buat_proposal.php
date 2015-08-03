@@ -52,7 +52,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                         <select id="kategori_usaha" class="form-control">
                                             <option value='pilih'>Pilih</option>
                                             <?php
-                                                $x = mysql_query("SELECT kategori_jenis FROM m_jenis_usaha group by kategori_jenis ") or die(mysql_error());
+                                                $x = mysql_query("SELECT kategori_jenis FROM m_jenis_usaha where is_active = 1 group by kategori_jenis ") or die(mysql_error());
                                                 while ($arrX=mysql_fetch_array($x)) {
                                             ?>
                                             <option value="<?php echo $arrX['kategori_jenis']; ?>"><?php echo $arrX['kategori_jenis']; ?></option>
@@ -167,7 +167,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                 <div class="control-group form-group">
                                     <label>Setting Nilai Investasi Owner :</label>
                                     <div class="form-group input-group">
-                                        <input id="nilai_investasi_owner" type="number" class="form-control"
+                                        <input id="nilai_investasi_owner" max='100' type="text" class="form-control"
                                         data-validation-number-message="Isi harus angka !"
                                         placeholder="%"
                                         >
@@ -182,7 +182,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                     </div>
                                     <label>Setting Proposal Jumlah Maksimum Investor:</label>
                                     <div class="form-group input-group">
-                                        <input type="number" id="setting_investor" class="form-control"
+                                        <input type="text" id="setting_investor" class="form-control"
                                         value="0"
                                         data-validation-number-message="Isi harus angka !"
                                         placeholder="Jumlah Maksimal Investor"

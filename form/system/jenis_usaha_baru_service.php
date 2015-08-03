@@ -6,8 +6,8 @@
 		$id = gen_uuid();
 		$nama_usaha = $_POST['nama_usaha'];
 		$jenis_usaha = $_POST['jenis_usaha'];
-		$modal = $_POST['modal'];
-		$jumlah_pegawai = $_POST['jumlah_pegawai'];
+		$modal = preg_replace('/(?<=\d),(?=\d{3}\b)/','', $_POST['modal']);
+		$jumlah_pegawai = preg_replace('/(?<=\d),(?=\d{3}\b)/','', $_POST['jumlah_pegawai']); 
 		$no_tlp = $_POST['no_tlp'];
 		$file_photo1 = $_FILES['file_photo1']['name'];
 		$file_photo2 = $_FILES['file_photo2']['name'];
@@ -28,14 +28,39 @@
 		$fileName4 = $id."_file4.".$ext4;
 		$fileName5 = $id."_file_doc.".$ext5;
 
-
+		if ($file_photo1 == "") {
+			$fileName1 = "";
+		}
+		if ($file_photo2 == "") {
+			$fileName2 = "";
+		}
+		if ($file_photo3 == "") {
+			$fileName3 = "";
+		}
+		if ($file_photo4 == "") {
+			$fileName4 = "";
+		}
+		if ($file_doc == "") {
+			$fileName5 = "";
+		}
 		$result = mysql_query("INSERT INTO m_jenis_usaha VALUES('$id', '$nama_usaha', '$no_tlp', '$jenis_usaha', $modal, $jumlah_pegawai, '$deskripsi', '$fileName1', '$fileName2', '$fileName3', '$fileName4', '$fileName5', now(),  0) ") or die(mysql_error());
 		if ($result) {
-				move_uploaded_file($_FILES['file_photo1']['tmp_name'], '../upload/images/'.$fileName1);
-				move_uploaded_file($_FILES['file_photo2']['tmp_name'], '../upload/images/'.$fileName2);
-				move_uploaded_file($_FILES['file_photo3']['tmp_name'], '../upload/images/'.$fileName3);
-				move_uploaded_file($_FILES['file_photo4']['tmp_name'], '../upload/images/'.$fileName4);
-				move_uploaded_file($_FILES['file_doc']['tmp_name'], '../upload/document/'.$fileName5);
+				if ($fileName1 != "") {
+					move_uploaded_file($_FILES['file_photo1']['tmp_name'], '../upload/images/'.$fileName1);
+				}
+				if ($fileName2 != "") {
+					move_uploaded_file($_FILES['file_photo2']['tmp_name'], '../upload/images/'.$fileName2);
+				}
+				if ($fileName3 != "") {
+					move_uploaded_file($_FILES['file_photo3']['tmp_name'], '../upload/images/'.$fileName3);
+				}
+				if ($fileName4 != "") {
+					move_uploaded_file($_FILES['file_photo4']['tmp_name'], '../upload/images/'.$fileName4);
+				}
+				if ($fileName5 != "") {
+					move_uploaded_file($_FILES['file_doc']['tmp_name'], '../upload/document/'.$fileName5);
+				}
+
 				echo "<script> alert('Terima Kasih Partisipasinya !! Admin pengelola akan me-review pengajuan anda.'); window.location.href='../index.php'</script>";
 			} else {
 				echo "<script> alert('Proses Gagal Silahkan Ulangi !'); window.history.back();</script>";

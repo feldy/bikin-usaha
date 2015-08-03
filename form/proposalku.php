@@ -41,7 +41,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                     u.doc as doc
                         FROM        t_proposal_usaha o 
                         INNER JOIN  m_entrepreneur e ON o.id_owner = e.id 
-                        INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id 
+                        INNER JOIN  m_jenis_usaha u ON o.id_jenis_usaha = u.id and u.is_active = 1
                         WHERE       o.id = '$id_proposal'
                         GROUP BY    o.id
                         ") or die(mysql_error());
@@ -283,13 +283,24 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                         <h2 class="page-header"><i class="fa fa-group"></i>Anggota</h2>
                         <div class="row">
                             <?php
+                                $tipeUser = "";
+                                if (isset($_SESSION['tipe_user'])) {
+                                    $tipeUser = $_SESSION['tipe_user'];
+                                }
+
+                                $sqlTambahan = "";
+                                if ($tipeUser == "Pegawai" || $tipeUser == "Investor") {
+                                    $sqlTambahan = "AND tipe_anggota = 'pegawai'";
+                                }
+
                                 $strQryAnggota = "  SELECT  e.nama as nama_entrepreneur,
                                                             e.file_photo as photo_entrepreneur,
                                                             t.tipe_anggota as tipe_anggota
                                                     FROM t_anggota_proposal_usaha t 
                                                     INNER JOIN m_entrepreneur e ON t.id_entrepreneur = e.id
                                                     WHERE id_proposal_usaha = '$id_proposal' 
-                                                    AND status = 'APPROVED' 
+                                                    AND status = 'APPROVED'
+                                                    $sqlTambahan 
                                                     GROUP BY t.id_entrepreneur
                                                     ";
                                 $qryAnggota = mysql_query($strQryAnggota) or die (mysql_error());
@@ -343,7 +354,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                         <div class="panel-body">
                             <div class="col-md-12">
                                 <ul>
-                                    <li>Modal :Rp. <strong><?php echo number_format($map['modal']); ?></strong> </li>
+                                    <!-- REVISI BU NIA<li>Modal :Rp. <strong><?php echo number_format($map['modal']); ?></strong> </li> -->
                                     <li>Supplier: <?php echo $map['nama_supplier']; ?></li>
                                     <li>Kontak: <?php echo $map['contact_supplier']; ?></li>
                                     <li>Lokasi : <?php echo $map['kota']; ?></li>

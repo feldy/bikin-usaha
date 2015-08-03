@@ -5,6 +5,14 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
     echo "<script>location='?page=login'</script>";
     // echo "string";
 } else {
+    $tipeUser = "";
+    if (isset($_SESSION['tipe_user'])) {
+        $tipeUser = $_SESSION['tipe_user'];
+    }
+
+    if ($tipeUser == "Investor" || $tipeUser == "Pegawai") {
+
+    } else {
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -37,6 +45,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                                                 tp.nama_proposal as nama_proposal_usaha, 
                                                                 t.tipe_anggota as tipe,
                                                                 t.status as status,
+                                                                e.id as id_anggota,
                                                                 e.nama as nama_anggota 
                                                     FROM        t_anggota_proposal_usaha t 
                                                     INNER JOIN  t_proposal_usaha tp ON t.id_proposal_usaha = tp.id
@@ -70,7 +79,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                 <td><?php echo $arrApproval['nama_proposal_usaha']; ?></td>
                                 <td><?php echo $arrApproval['nama_anggota']; ?></td>
 
-                                <td><?php echo $approved;?> | <?php echo $reject; ?></a></td>
+                                <td><?php echo $approved;?> | <?php echo $reject; ?> | <a href="?page=vw_user&id_user=<?php echo $arrApproval['id_anggota']; ?>" target="_blank">VIEW</a></td>
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -101,6 +110,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                                                 tp.nama_proposal as nama_proposal_usaha, 
                                                                 t.tipe_anggota as tipe,
                                                                 t.status as status,
+                                                                e.id as id_anggota, 
                                                                 e.nama as nama_anggota 
                                                     FROM        t_anggota_proposal_usaha t 
                                                     INNER JOIN  t_proposal_usaha tp ON t.id_proposal_usaha = tp.id
@@ -134,7 +144,7 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                 <td><?php echo $arrApproval['nama_proposal_usaha']; ?></td>
                                 <td><?php echo $arrApproval['nama_anggota']; ?></td>
 
-                                <td><?php echo $approved;?> | <?php echo $reject; ?> </a></td>
+                                <td><?php echo $approved;?> | <?php echo $reject; ?> | <a href="?page=vw_user&id_user=<?php echo $arrApproval['id_anggota']; ?>" target="_blank">VIEW</a></td>
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -144,6 +154,72 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
         </div>
     </div>
 </div>
+<?php 
+}
+    if ($_SESSION['email'] == "admin@admin.com") {
+?>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Pengajuan
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Daftar Pengajuan Usaha Baru !
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tanggal</th>
+                                <th>Nama Jenis Usaha</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                                $user = $_SESSION['user_sid'];
+                                $strQryApproval = " SELECT     *
+                                                    FROM        m_jenis_usaha j ORDER BY tanggal";
+                                // echo $strQryApproval;
+                                $qryApproval = mysql_query($strQryApproval) or die (mysql_error());
+                                $count = 0;
+                                $join = "";
+                                
+                                while ($arrApproval = mysql_fetch_array($qryApproval)) {
+                                     $count++;
+                                    if ($arrApproval['is_active'] == "1") {
+                                        $approved = "<span style='color: green;'><i class='fa fa-check-circle-o'></i><strong> APPROVED</strong></span>";
+                                    } else {
+                                        $approved = "<a href='system/approval_service.php?persetujuan=approved&tipe_anggota=usaha&id=".$arrApproval['id']."' >APPROVED</a>";
+                                    }
+
+                                   
+                            ?>
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td><?php echo $arrApproval['tanggal']; ?></td>
+                                <td><?php echo $arrApproval['nama']; ?></td>
+                                <td><?php echo $approved;?> | <a href='system/approval_service.php?persetujuan=rejected&tipe_anggota=usaha&id=<?php echo $arrApproval["id"]?>' >REJECT</a> | <a href="#">VIEW</a> </td>
+                                <!-- <td><a href='index.php?page=join_usaha&id_proposal=<?php echo $arrApproval["id_proposal_usaha"];?>' >JOIN</a></td> -->
+                            </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    } else {
+?>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Undangan
@@ -187,25 +263,13 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
                                 
                                 while ($arrApproval = mysql_fetch_array($qryApproval)) {
                                     $count++;
-                                    // if ($arrApproval['status'] == "APPROVED") {
-                                    //     $join = "<span style='color: green;'><i class='fa fa-check-circle-o'></i><strong> JOINED</strong></span>";
-                                    // } else {
-                                    //     $join = "<a href='#' >JOIN</a>";
-                                    // }
-
-                                    // if ($arrApproval['status'] == "REJECT") {
-                                    //     $reject = "<span style='color: red;'><i class='fa fa-ban'></i><strong> REJECT</strong></span>";
-                                    // } else {
-                                    //     $reject = "<a href='#' >REJECT</a>";
-                                    // }
-
                             ?>
                             <tr>
                                 <td><?php echo $count; ?></td>
                                 <td><?php echo $arrApproval['nama_proposal_usaha']; ?></td>
                                 <td><?php echo $arrApproval['from_id']; ?></td>
 
-                                <td><a href='index.php?page=join_usaha&id_proposal=<?php echo $arrApproval["id_proposal_usaha"];?>' >JOIN</a></td>
+                                <td><a href='index.php?page=join_usaha&id_proposal=<?php echo $arrApproval["id_proposal_usaha"];?>' >JOIN</a> | <a href="?page=vw_owner&id_proposal=<?php echo $arrApproval['id_proposal_usaha']; ?>" target="_blank">VIEW OWNER</a></td>
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -215,4 +279,5 @@ if (empty($_SESSION['email']) || empty($_SESSION['password']) ) {
         </div>
     </div>
 </div>
+<?php } ?>
 <?php } ?>
